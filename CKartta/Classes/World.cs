@@ -22,7 +22,7 @@ namespace CKartta
             gSize = gridSize;
             wdt = width;
             hgt = heigth;
-
+            //create the grid
             for (short i = 0; i < wdt; i++)
             {                
                 for(short j = 0; j < hgt; j++)
@@ -32,6 +32,17 @@ namespace CKartta
                 }
             }
         }
-        
+
+        public List<Crd> GetList()
+        {
+            List<Crd> freezones = new List<Crd>(worldGrid);
+            return freezones;
+        }
+
+        public void WaterLevels()
+        {
+
+        }
+
     }
 }
