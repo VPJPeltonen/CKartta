@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CKartta
 {
@@ -15,8 +17,8 @@ namespace CKartta
         private string name;                //name of the continent
         private string color;               //color the continent will be on screen
         List<Crd> areas = new List<Crd>();  //area coordinates list
-        private short X;
-        private short Y;
+        private short X;                    //starting X
+        private short Y;                    //starting Y
 
         //constructor
         public Continent(string continentName, string drawColor, List<Crd> freeArea, int hgt, int wdt)
@@ -39,9 +41,15 @@ namespace CKartta
             }            
         }
 
-        public void drawSelf()
+        public void drawSelf(System.Windows.Controls.Grid mapGrid)
         {
-            Rectangle square = new Rectangle();
+            //get position from list
+            Crd position = areas[0];
+            Rectangle temp = new Rectangle();
+            temp.Fill = new SolidColorBrush(Colors.Blue);
+            System.Windows.Controls.Grid.SetRow(temp, position.x);
+            System.Windows.Controls.Grid.SetColumn(temp, position.y);
+            mapGrid.Children.Add(temp);
         }
 
         //spread continent across the screen

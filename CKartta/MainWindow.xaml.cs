@@ -53,51 +53,33 @@ namespace CKartta
             List<Crd> freelist = mWorld.GetList();
 
             //create continents
-            Continent cA = new Continent("A", "#0000ff", freelist, GWidth, GHeight);
-            Continent cB = new Continent("B", red, freelist, GWidth, GHeight);
-            Continent cC = new Continent("C", green, freelist, GWidth, GHeight);
-            Continent cD = new Continent("D", aqua, freelist, GWidth, GHeight);
-            Continent cE = new Continent("E", orange, freelist, GWidth, GHeight);
-            Continent cF = new Continent("F", purple, freelist, GWidth, GHeight);
+            List<object> continents = new List<object>(); //continentlist
+            continents.Add(new Continent("A", "#0000ff", freelist, GWidth, GHeight));
+            continents.Add(new Continent("B", red, freelist, GWidth, GHeight));
+            continents.Add(new Continent("C", green, freelist, GWidth, GHeight));
+            continents.Add(new Continent("D", aqua, freelist, GWidth, GHeight));
+            continents.Add(new Continent("E", orange, freelist, GWidth, GHeight));
+            continents.Add(new Continent("F", purple, freelist, GWidth, GHeight));
 
             //grid stuff
-            Grid B = new Grid();
+            Grid mapGrid = new Grid();
             int[] scores = new int[10];
 
             // Define the Columns
             for (int i = 0; i < GWidth; ++i)
-                B.ColumnDefinitions.Add(new ColumnDefinition());
+                mapGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
             // Define the Rows
             for (int i = 0; i < GHeight; ++i)
-                B.RowDefinitions.Add(new RowDefinition());
+                mapGrid.RowDefinitions.Add(new RowDefinition());
 
-            main.Content = B;
-            /*
-            while (true){
+            main.Content = mapGrid;
 
+            //draw all continents
+            foreach (Continent continent in continents)
+            {
+                continent.drawSelf(mapGrid);
             }
-
-            / Add the first text cell to the Grid
-            TextBlock txt1 = new TextBlock();
-            txt1.Text = "testing";
-            txt1.FontSize = 20;
-            txt1.FontWeight = FontWeights.Bold;
-            Grid.SetRow(txt1, 0);
-            Grid.SetColumn(txt1, 1);
-           
-            B.Children.Add(txt1);
-
-            // initialize button object
-            Button button = new Button();
-            // set properties
-            button.Width = 160;
-            button.Height = 72;
-            button.Content = "Click Me";
-            // Attach it to the visual tree, specifically as a child of a Grid object (named 'ContentPanel') that already exists. 
-            // In other words, position the button in the UI.
-            B.Children.Add(button);
-             */
         }
 
     }
