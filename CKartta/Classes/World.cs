@@ -23,9 +23,9 @@ namespace CKartta
             wdt = width;
             hgt = heigth;
             //create the grid
-            for (short i = 0; i < wdt; i++)
+            for (int i = 0; i < wdt; i++)
             {                
-                for(short j = 0; j < hgt; j++)
+                for(int j = 0; j < hgt; j++)
                 {
                     Crd temp = new Crd(i, j);
                     worldGrid.Add(temp);

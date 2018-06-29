@@ -17,9 +17,9 @@ namespace CKartta
 {
     public struct Crd
     {
-        public short x;
-        public short y;
-        public Crd(short XCoordinate, short YCoordinate)
+        public int x;
+        public int y;
+        public Crd(int XCoordinate, int YCoordinate)
         {
             x = XCoordinate;
             y = YCoordinate;
@@ -31,14 +31,6 @@ namespace CKartta
     /// </summary>
     public partial class MainWindow : Window
     {
-        //some colors
-        public string blue = "#0000ff";
-        public string red = "#ff0000";
-        public string green = "#00ff00";
-        public string aqua = "#00ffff";
-        public string orange = "#ffff00";
-        public string purple = "#ff00ff";
-
         public int GWidth = 100;
         public int GHeight = 75;
 
@@ -54,12 +46,12 @@ namespace CKartta
 
             //create continents
             List<object> continents = new List<object>(); //continentlist
-            continents.Add(new Continent("A", "#0000ff", freelist, GWidth, GHeight));
-            continents.Add(new Continent("B", red, freelist, GWidth, GHeight));
-            continents.Add(new Continent("C", green, freelist, GWidth, GHeight));
-            continents.Add(new Continent("D", aqua, freelist, GWidth, GHeight));
-            continents.Add(new Continent("E", orange, freelist, GWidth, GHeight));
-            continents.Add(new Continent("F", purple, freelist, GWidth, GHeight));
+            continents.Add(new Continent("A", Colors.Blue, freelist, GWidth, GHeight));
+            continents.Add(new Continent("B", Colors.Red, freelist, GWidth, GHeight));
+            continents.Add(new Continent("C", Colors.Green, freelist, GWidth, GHeight));
+            continents.Add(new Continent("D", Colors.Yellow, freelist, GWidth, GHeight));
+            continents.Add(new Continent("E", Colors.Orange, freelist, GWidth, GHeight));
+            continents.Add(new Continent("F", Colors.Purple, freelist, GWidth, GHeight));
 
             //grid stuff
             Grid mapGrid = new Grid();
@@ -73,7 +65,21 @@ namespace CKartta
             for (int i = 0; i < GHeight; ++i)
                 mapGrid.RowDefinitions.Add(new RowDefinition());
 
-            main.Content = mapGrid;
+            main.Content = mapGrid; //attach the grid to the window
+
+            for (int i = 0; i <100; i++)
+            {
+                foreach(Continent continent in continents)
+                {
+                    continent.Spread(GWidth, freelist);
+                }
+                bool isEmpty = !freelist.Any();
+                if (isEmpty)
+                {
+                    break;
+                }
+
+            }
 
             //draw all continents
             foreach (Continent continent in continents)
