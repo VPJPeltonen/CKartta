@@ -52,6 +52,8 @@ namespace CKartta
             continents.Add(new Continent("D", Colors.Yellow, freelist, GWidth, GHeight));
             continents.Add(new Continent("E", Colors.Orange, freelist, GWidth, GHeight));
             continents.Add(new Continent("F", Colors.Purple, freelist, GWidth, GHeight));
+            continents.Add(new Continent("G", Colors.Black, freelist, GWidth, GHeight));
+            continents.Add(new Continent("H", Colors.Aqua, freelist, GWidth, GHeight));
 
             //grid stuff
             Grid mapGrid = new Grid();
@@ -67,17 +69,17 @@ namespace CKartta
 
             main.Content = mapGrid; //attach the grid to the window
 
-            for (int i = 0; i <100; i++)
+            for (int i = 0; i <30; i++)
             {
                 foreach(Continent continent in continents)
                 {
                     continent.Spread(GWidth, freelist);
                 }
-                bool isEmpty = !freelist.Any();
+                /*bool isEmpty = !freelist.Any();
                 if (isEmpty)
                 {
                     break;
-                }
+                }*/
 
             }
 

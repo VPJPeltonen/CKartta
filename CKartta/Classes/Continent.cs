@@ -52,65 +52,75 @@ namespace CKartta
                 Grid.SetColumn(temp, spot.y);
                 mapGrid.Children.Add(temp);
             }
+            foreach (Crd spot in doneAreas)
+            {
+                //get position from list
+                Rectangle temp = new Rectangle();
+                temp.Fill = new SolidColorBrush(color);
+                Grid.SetRow(temp, spot.x);
+                Grid.SetColumn(temp, spot.y);
+                mapGrid.Children.Add(temp);
+            }
         }
 
         //spread continent across the screen
         public void Spread(int wdt, List<Crd> freeArea)
         {
-            Random Rnd = new Random();
-            foreach (Crd spot in freeArea)
-            {
-                int flip = Rnd.Next(0, 1);
-                if (flip == 1)
-                {
-                    bool done = true;
-                    //check neighbours
-                    //left
-                    Crd temp = new Crd(spot.x-1, spot.y);
-                    bool containsItem = freeArea.Contains(temp);
-                    if (containsItem)
-                    {
-                        areas.Add(temp);
-                        freeArea.Remove(temp);
-                        done = false;
-                    }
-                    //right
-                    temp.x += 2;
-                    containsItem = freeArea.Contains(temp);
-                    if (containsItem)
-                    {
-                        areas.Add(temp);
-                        freeArea.Remove(temp);
-                        done = false;
-                    }
-                    //up
-                    temp.x -= 1;
-                    temp.y -= 1;
-                    containsItem = freeArea.Contains(temp);
-                    if (containsItem)
-                    {
-                        areas.Add(temp);
-                        freeArea.Remove(temp);
-                        done = false;
-                    }
-                    //down
-                    temp.y += 2;
-                    containsItem = freeArea.Contains(temp);
-                    if (containsItem)
-                    {
-                        areas.Add(temp);
-                        freeArea.Remove(temp);
-                        done = false;
-                    }
+            Random Rnd = new Random(2);
+            List<Crd> tempareas = new List<Crd>(areas);
+             foreach (Crd spot in tempareas)
+             {
+                 int flip = Rnd.Next(0, 2);
+                 if (flip == 1)
+                 {
+                     bool done = true;
+                     //check neighbours
+                     //left
+                     Crd temp = new Crd(spot.x-1, spot.y);
+                     bool containsItem = freeArea.Contains(temp);
+                     if (containsItem)
+                     {
+                         areas.Add(temp);
+                         freeArea.Remove(temp);
+                         done = false;
+                     }
+                     //right
+                     temp.x += 2;
+                     containsItem = freeArea.Contains(temp);
+                     if (containsItem)
+                     {
+                         areas.Add(temp);
+                         freeArea.Remove(temp);
+                         done = false;
+                     }
+                     //up
+                     temp.x -= 1;
+                     temp.y -= 1;
+                     containsItem = freeArea.Contains(temp);
+                     if (containsItem)
+                     {
+                         areas.Add(temp);
+                         freeArea.Remove(temp);
+                         done = false;
+                     }
+                     //down
+                     temp.y += 2;
+                     containsItem = freeArea.Contains(temp);
+                     if (containsItem)
+                     {
+                         areas.Add(temp);
+                         freeArea.Remove(temp);
+                         done = false;
+                     }
 
-                    //move spot to another list if it cant spread anymore 
-                    if (done)
-                    {
-                        doneAreas.Add(spot);
-                        areas.Remove(spot);
-                    }
-                }
-            }
+                     //move spot to another list if it cant spread anymore 
+                     if (done)
+                     {
+                         doneAreas.Add(spot);
+                         areas.Remove(spot);
+                     }
+                 }
+             }
         }
     }
 }
