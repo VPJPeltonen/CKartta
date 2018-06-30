@@ -31,8 +31,8 @@ namespace CKartta
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int GWidth = 100;
-        public int GHeight = 75;
+        public int GWidth = 88;
+        public int GHeight = 88;
 
         public MainWindow()
         {
@@ -46,48 +46,67 @@ namespace CKartta
 
             //create continents
             List<object> continents = new List<object>(); //continentlist
-            continents.Add(new Continent("A", Colors.Blue, freelist, GWidth, GHeight));
-            continents.Add(new Continent("B", Colors.Red, freelist, GWidth, GHeight));
-            continents.Add(new Continent("C", Colors.Green, freelist, GWidth, GHeight));
-            continents.Add(new Continent("D", Colors.Yellow, freelist, GWidth, GHeight));
-            continents.Add(new Continent("E", Colors.Orange, freelist, GWidth, GHeight));
-            continents.Add(new Continent("F", Colors.Purple, freelist, GWidth, GHeight));
-            continents.Add(new Continent("G", Colors.Black, freelist, GWidth, GHeight));
-            continents.Add(new Continent("H", Colors.Aqua, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.Blue, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.Red, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.Green, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.Yellow, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.Orange, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.Purple, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.Black, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.Aqua, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.Salmon, freelist, GWidth, GHeight));
+            continents.Add(new Continent(Brushes.DeepSkyBlue, freelist, GWidth, GHeight));
 
+            var mainCanvas = new Canvas();
+            mainCanvas.Background = Brushes.Black;
+            
             //grid stuff
-            Grid mapGrid = new Grid();
-            int[] scores = new int[10];
+            //Grid mapGrid = new Grid();
+            //mapGrid.ShowGridLines = false;
+            //int[] scores = new int[10];
 
             // Define the Columns
-            for (int i = 0; i < GWidth; ++i)
-                mapGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            //for (int i = 0; i < GWidth; ++i)
+            //    mapGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
             // Define the Rows
-            for (int i = 0; i < GHeight; ++i)
-                mapGrid.RowDefinitions.Add(new RowDefinition());
+            //for (int i = 0; i < GHeight; ++i)
+            //    mapGrid.RowDefinitions.Add(new RowDefinition());
 
-            main.Content = mapGrid; //attach the grid to the window
-
-            for (int i = 0; i <30; i++)
+            main.Content = mainCanvas; //attach the grid to the window
+            
+            //spread continents
+            for (int i = 0; i <100; i++)
             {
-                foreach(Continent continent in continents)
-                {
-                    continent.Spread(GWidth, freelist);
-                }
-                /*bool isEmpty = !freelist.Any();
-                if (isEmpty)
-                {
-                    break;
-                }*/
-
+                foreach(Continent continent in continents){continent.Spread(GWidth, freelist);}
+                bool isEmpty = !freelist.Any();
+                if (isEmpty) { break; }
             }
+
+            //set waterlevels
+            mWorld.WaterLevels(continents);
 
             //draw all continents
-            foreach (Continent continent in continents)
+            foreach (Continent continent in continents){continent.drawSelf(mainCanvas);}
+
+            /*
+            Rectangle rect = new Rectangle
             {
-                continent.drawSelf(mapGrid);
-            }
+                Stroke = Brushes.Red,
+                StrokeThickness = 10
+            };
+            Canvas.SetLeft(rect, 10);
+            Canvas.SetTop(rect, 10);
+            mainCanvas.Children.Add(rect);
+
+            Rectangle rect2 = new Rectangle
+            {
+                Stroke = Brushes.Red,
+                StrokeThickness = 10
+            };
+            Canvas.SetLeft(rect2, 0);
+            Canvas.SetTop(rect2, 0);
+            mainCanvas.Children.Add(rect2);*/
         }
 
     }

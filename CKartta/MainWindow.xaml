@@ -5,7 +5,5 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CKartta"
         mc:Ignorable="d"
-        Title="A" Height="600" Width="800" Name ="main">
-    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="100" Margin="216,147,0,0" Stroke="Black" VerticalAlignment="Top" Width="100"/>
-</Window>
+        Title="A" Height="600" Width="800" Name ="main"/>
     

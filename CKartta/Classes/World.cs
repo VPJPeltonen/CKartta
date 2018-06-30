@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace CKartta
 {
@@ -39,9 +40,16 @@ namespace CKartta
             return freezones;
         }
 
-        public void WaterLevels()
+        public void WaterLevels(List<Object> continents)
         {
-
+            int averageLevel = 0;
+            foreach (Continent leveling in continents) {averageLevel += leveling.depth;}
+            averageLevel = averageLevel / continents.Count;
+            foreach (Continent watering in continents)
+            {
+                if (watering.depth <= averageLevel){watering.color = Brushes.Blue;}
+                else{ watering.color = Brushes.Green; }
+            }
         }
 
     }

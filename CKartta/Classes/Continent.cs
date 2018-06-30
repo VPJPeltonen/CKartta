@@ -14,23 +14,22 @@ namespace CKartta
      */ 
     class Continent
     {
-        private string name;                     //name of the continent
-        private Color color;                    //color the continent will be on screen
+        public int depth;                      //how high does the continent stand
+        public Brush color;                    //color the continent will be on screen
         List<Crd> areas = new List<Crd>();      //area coordinates list
         List<Crd> doneAreas = new List<Crd>();  //areas that cant spread anymore
         private int X;                          //starting X
         private int Y;                          //starting Y
 
         //constructor
-        public Continent(string continentName, Color drawColor, List<Crd> freeArea, int hgt, int wdt)
-        {
-            name = continentName;
+        public Continent(Brush drawColor, List<Crd> freeArea, int hgt, int wdt)
+        {         
             color = drawColor;
             Random Rnd = new Random();
             while (true)
             {
-                X = Rnd.Next(0,hgt);
-                Y = Rnd.Next(0,wdt);
+                X = Rnd.Next(0,hgt-1);
+                Y = Rnd.Next(0,wdt-1);
                 Crd temp = new Crd(X, Y);
                 bool containsItem = freeArea.Contains(temp);
                 if (containsItem)
@@ -39,27 +38,41 @@ namespace CKartta
                     freeArea.Remove(temp);
                     break;                    
                 }                
-            }            
+            }
+            depth = Rnd.Next(0, 10);
         }
 
-        public void drawSelf(Grid mapGrid)
+        //create rectangles for the grid
+        public void drawSelf(Canvas mainCanvas)
         {
-            foreach (Crd spot in areas) { 
-                //get position from list
+            foreach (Crd spot in areas) {
+                Rectangle temp = new Rectangle
+                {
+                    Stroke = color,
+                    StrokeThickness = 8
+                };
+                Canvas.SetLeft(temp, spot.x*8);
+                Canvas.SetTop(temp, spot.y*8);
+                mainCanvas.Children.Add(temp);
+
+                /*/get position from list
                 Rectangle temp = new Rectangle();
                 temp.Fill = new SolidColorBrush(color);
+                temp.Margin = new System.Windows.Thickness (0,0,0,0);
                 Grid.SetRow(temp, spot.x);
                 Grid.SetColumn(temp, spot.y);
-                mapGrid.Children.Add(temp);
+                mapGrid.Children.Add(temp);*/
             }
             foreach (Crd spot in doneAreas)
             {
-                //get position from list
-                Rectangle temp = new Rectangle();
-                temp.Fill = new SolidColorBrush(color);
-                Grid.SetRow(temp, spot.x);
-                Grid.SetColumn(temp, spot.y);
-                mapGrid.Children.Add(temp);
+                Rectangle temp = new Rectangle
+                {
+                    Stroke = color,
+                    StrokeThickness = 8
+                };
+                Canvas.SetLeft(temp, spot.x * 8);
+                Canvas.SetTop(temp, spot.y * 8);
+                mainCanvas.Children.Add(temp);
             }
         }
 
@@ -94,8 +107,8 @@ namespace CKartta
                          done = false;
                      }
                      //up
-                     temp.x -= 1;
-                     temp.y -= 1;
+                     temp.x = spot.x;
+                     temp.y = spot.y-1;
                      containsItem = freeArea.Contains(temp);
                      if (containsItem)
                      {
