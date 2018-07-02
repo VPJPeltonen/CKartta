@@ -80,18 +80,6 @@ namespace CKartta
             }
         }
 
-        //move area around lists
-        private bool MovedAreas(bool found,List<Node> Areas, List<Node> FreeAreas, Node Area)
-        {
-            if (found)
-            {
-                Areas.Add(Area);
-                FreeAreas.Remove(Area);
-                return false;
-            }
-            else { return true;}
-        }
-
         //spread continent across the screen
         public void Spread(int wdt, List<Node> freeNodes)
         {
@@ -123,40 +111,6 @@ namespace CKartta
                         areas.Remove(spot);
                     }
                 }
-                //}
-                /*bool done = true;
-                //check neighbours
-                //left
-                Node temp = new Node(spot.x-1, spot.y);
-                bool containsItem = freeNodes.Contains(temp);
-                done = MovedAreas(containsItem,areas, freeNodes, temp);*/
-                /* if (node.x == temp.x && node.y == temp.y)
-                 {
-                     areas.Add(node);
-                     freeNodes.Remove(node);
-                     startSet = false;
-                     break;
-                 }*/
-                /*
-                //right
-                temp.x += 2;
-                containsItem = freeArea.Contains(temp);
-                done = MovedAreas(containsItem, areas, freeArea, temp);
-                //up
-                temp.x = spot.x;
-                temp.y = spot.y-1;
-                containsItem = freeArea.Contains(temp);
-                done = MovedAreas(containsItem, areas, freeArea, temp);
-                //down
-                temp.y += 2;
-                containsItem = freeArea.Contains(temp);
-                done = MovedAreas(containsItem, areas, freeArea, temp);
-                //move spot to another list if it cant spread anymore 
-                if (done)
-                {
-                    doneAreas.Add(spot);
-                    areas.Remove(spot);
-                }*/
 
             }
         }

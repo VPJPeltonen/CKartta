@@ -15,17 +15,6 @@ using System.Windows.Shapes;
 
 namespace CKartta
 {
-    /*public struct Crd
-    {
-        public int x;
-        public int y;
-        public Crd(int XCoordinate, int YCoordinate)
-        {
-            x = XCoordinate;
-            y = YCoordinate;
-        }
-    }*/
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
