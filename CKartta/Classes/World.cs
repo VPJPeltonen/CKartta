@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace CKartta
 {
@@ -44,12 +46,28 @@ namespace CKartta
         public void WaterLevels(List<Object> continents)
         {
             int averageLevel = 0;
-            foreach (Continent leveling in continents) {averageLevel += leveling.depth;}
-            averageLevel = averageLevel / continents.Count;
-            foreach (Continent watering in continents)
+            foreach (Node node in worldGrid) { averageLevel += node.elevation; }
+            averageLevel = averageLevel / worldGrid.Count;
+            foreach (Node node in worldGrid)
             {
-                if (watering.depth <= averageLevel){watering.color = Brushes.Blue;}
-                else{ watering.color = Brushes.Green; }
+                if (node.elevation <= averageLevel) { node.color = Brushes.Blue; }
+                else { node.color = Brushes.Green; }
+            }
+        }
+
+        //draw the nodes
+        public void DrawWorld(Canvas mainCanvas)
+        {
+            foreach (Node node in worldGrid)
+            {
+                Rectangle temp = new Rectangle
+                {
+                    Stroke = node.color,
+                    StrokeThickness = 8
+                };
+                Canvas.SetLeft(temp, node.x * 8);
+                Canvas.SetTop(temp, node.y * 8);
+                mainCanvas.Children.Add(temp);
             }
         }
 

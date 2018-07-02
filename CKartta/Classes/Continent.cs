@@ -27,10 +27,12 @@ namespace CKartta
             color = drawColor;
             Random Rnd = new Random();
             bool startSet = true;
+            depth = Rnd.Next(0, 10);
             while (startSet == true)
             {
                 X = Rnd.Next(0,hgt-1);
                 Y = Rnd.Next(0,wdt-1);
+                depth = Rnd.Next(0, 10);
                 Node temp = new Node(X, Y);
                 foreach (Node node in freeNodes)
                 {
@@ -39,46 +41,15 @@ namespace CKartta
                         areas.Add(node);
                         freeNodes.Remove(node);
                         startSet = false;
+                        node.elevation = depth; //set the nodes elevation as the same as continents
+                        node.color = color;
                         break;
                     }
-                }
-
-                /*/bool containsItem = freeNodes.Contains(temp);
-                if (containsItem)
-                {
-                    areas.Add(temp);
-                    freeNodes.Remove(temp);
-                    break;                    
-                } */               
+                }       
             }
-            depth = Rnd.Next(0, 10);
+            
         }
 
-        //create rectangles for the grid
-        public void drawSelf(Canvas mainCanvas)
-        {
-            foreach (Node spot in areas) {
-                Rectangle temp = new Rectangle
-                {
-                    Stroke = color,
-                    StrokeThickness = 8
-                };
-                Canvas.SetLeft(temp, spot.x*8);
-                Canvas.SetTop(temp, spot.y*8);
-                mainCanvas.Children.Add(temp);
-            }
-            foreach (Node spot in doneAreas)
-            {
-                Rectangle temp = new Rectangle
-                {
-                    Stroke = color,
-                    StrokeThickness = 8
-                };
-                Canvas.SetLeft(temp, spot.x * 8);
-                Canvas.SetTop(temp, spot.y * 8);
-                mainCanvas.Children.Add(temp);
-            }
-        }
 
         //spread continent across the screen
         public void Spread(int wdt, List<Node> freeNodes)
@@ -101,6 +72,8 @@ namespace CKartta
                         {
                             areas.Add(neighbour);
                             freeNodes.Remove(neighbour);
+                            neighbour.elevation = depth; //set the nodes elevation as the same as continents
+                            neighbour.color = color;
                             done = false;
                         }
 

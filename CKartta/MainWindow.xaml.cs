@@ -67,8 +67,7 @@ namespace CKartta
             mWorld.WaterLevels(continents);
 
             //draw all continents
-            foreach (Continent continent in continents){continent.drawSelf(mainCanvas);}
-
+            mWorld.DrawWorld(mainCanvas);
         }
 
     }
