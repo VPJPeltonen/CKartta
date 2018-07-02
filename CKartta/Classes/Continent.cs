@@ -16,28 +16,40 @@ namespace CKartta
     {
         public int depth;                      //how high does the continent stand
         public Brush color;                    //color the continent will be on screen
-        List<Crd> areas = new List<Crd>();      //area coordinates list
-        List<Crd> doneAreas = new List<Crd>();  //areas that cant spread anymore
+        List<Node> areas = new List<Node>();      //area coordinates list
+        List<Node> doneAreas = new List<Node>();  //areas that cant spread anymore
         private int X;                          //starting X
         private int Y;                          //starting Y
 
         //constructor
-        public Continent(Brush drawColor, List<Crd> freeArea, int hgt, int wdt)
+        public Continent(Brush drawColor, List<Node> freeNodes, int hgt, int wdt)
         {         
             color = drawColor;
             Random Rnd = new Random();
-            while (true)
+            bool startSet = true;
+            while (startSet == true)
             {
                 X = Rnd.Next(0,hgt-1);
                 Y = Rnd.Next(0,wdt-1);
-                Crd temp = new Crd(X, Y);
-                bool containsItem = freeArea.Contains(temp);
+                Node temp = new Node(X, Y);
+                foreach (Node node in freeNodes)
+                {
+                    if (node.x == temp.x && node.y == temp.y) 
+                    {
+                        areas.Add(node);
+                        freeNodes.Remove(node);
+                        startSet = false;
+                        break;
+                    }
+                }
+
+                /*/bool containsItem = freeNodes.Contains(temp);
                 if (containsItem)
                 {
                     areas.Add(temp);
-                    freeArea.Remove(temp);
+                    freeNodes.Remove(temp);
                     break;                    
-                }                
+                } */               
             }
             depth = Rnd.Next(0, 10);
         }
@@ -45,7 +57,7 @@ namespace CKartta
         //create rectangles for the grid
         public void drawSelf(Canvas mainCanvas)
         {
-            foreach (Crd spot in areas) {
+            foreach (Node spot in areas) {
                 Rectangle temp = new Rectangle
                 {
                     Stroke = color,
@@ -54,16 +66,8 @@ namespace CKartta
                 Canvas.SetLeft(temp, spot.x*8);
                 Canvas.SetTop(temp, spot.y*8);
                 mainCanvas.Children.Add(temp);
-
-                /*/get position from list
-                Rectangle temp = new Rectangle();
-                temp.Fill = new SolidColorBrush(color);
-                temp.Margin = new System.Windows.Thickness (0,0,0,0);
-                Grid.SetRow(temp, spot.x);
-                Grid.SetColumn(temp, spot.y);
-                mapGrid.Children.Add(temp);*/
             }
-            foreach (Crd spot in doneAreas)
+            foreach (Node spot in doneAreas)
             {
                 Rectangle temp = new Rectangle
                 {
@@ -76,64 +80,85 @@ namespace CKartta
             }
         }
 
+        //move area around lists
+        private bool MovedAreas(bool found,List<Node> Areas, List<Node> FreeAreas, Node Area)
+        {
+            if (found)
+            {
+                Areas.Add(Area);
+                FreeAreas.Remove(Area);
+                return false;
+            }
+            else { return true;}
+        }
+
         //spread continent across the screen
-        public void Spread(int wdt, List<Crd> freeArea)
+        public void Spread(int wdt, List<Node> freeNodes)
         {
             Random Rnd = new Random(2);
-            List<Crd> tempareas = new List<Crd>(areas);
-             foreach (Crd spot in tempareas)
-             {
-                 int flip = Rnd.Next(0, 2);
-                 if (flip == 1)
-                 {
-                     bool done = true;
-                     //check neighbours
-                     //left
-                     Crd temp = new Crd(spot.x-1, spot.y);
-                     bool containsItem = freeArea.Contains(temp);
-                     if (containsItem)
-                     {
-                         areas.Add(temp);
-                         freeArea.Remove(temp);
-                         done = false;
-                     }
-                     //right
-                     temp.x += 2;
-                     containsItem = freeArea.Contains(temp);
-                     if (containsItem)
-                     {
-                         areas.Add(temp);
-                         freeArea.Remove(temp);
-                         done = false;
-                     }
-                     //up
-                     temp.x = spot.x;
-                     temp.y = spot.y-1;
-                     containsItem = freeArea.Contains(temp);
-                     if (containsItem)
-                     {
-                         areas.Add(temp);
-                         freeArea.Remove(temp);
-                         done = false;
-                     }
-                     //down
-                     temp.y += 2;
-                     containsItem = freeArea.Contains(temp);
-                     if (containsItem)
-                     {
-                         areas.Add(temp);
-                         freeArea.Remove(temp);
-                         done = false;
-                     }
+            List<Node> tempareas = new List<Node>(areas);
+            
+            foreach (Node spot in tempareas)
+            {
+                int flip = Rnd.Next(0, 2);
+                if (flip == 1)
+                {
+                    //foreach (Node node in freeNodes.ToList())
+                    //{
+                    bool done = true;
+                    List<Node> tempNeighbours = new List<Node>(spot.neighbours);
+                    foreach (Node neighbour in tempNeighbours)
+                    {                        
+                        if (freeNodes.Contains(neighbour))
+                        {
+                            areas.Add(neighbour);
+                            freeNodes.Remove(neighbour);
+                            done = false;
+                        }
 
-                     //move spot to another list if it cant spread anymore 
-                     if (done)
-                     {
-                         doneAreas.Add(spot);
-                         areas.Remove(spot);
-                     }
-                 }
-             }
+                    }
+                    if (done)
+                    {
+                        doneAreas.Add(spot);
+                        areas.Remove(spot);
+                    }
+                }
+                //}
+                /*bool done = true;
+                //check neighbours
+                //left
+                Node temp = new Node(spot.x-1, spot.y);
+                bool containsItem = freeNodes.Contains(temp);
+                done = MovedAreas(containsItem,areas, freeNodes, temp);*/
+                /* if (node.x == temp.x && node.y == temp.y)
+                 {
+                     areas.Add(node);
+                     freeNodes.Remove(node);
+                     startSet = false;
+                     break;
+                 }*/
+                /*
+                //right
+                temp.x += 2;
+                containsItem = freeArea.Contains(temp);
+                done = MovedAreas(containsItem, areas, freeArea, temp);
+                //up
+                temp.x = spot.x;
+                temp.y = spot.y-1;
+                containsItem = freeArea.Contains(temp);
+                done = MovedAreas(containsItem, areas, freeArea, temp);
+                //down
+                temp.y += 2;
+                containsItem = freeArea.Contains(temp);
+                done = MovedAreas(containsItem, areas, freeArea, temp);
+                //move spot to another list if it cant spread anymore 
+                if (done)
+                {
+                    doneAreas.Add(spot);
+                    areas.Remove(spot);
+                }*/
+
+            }
         }
     }
 }

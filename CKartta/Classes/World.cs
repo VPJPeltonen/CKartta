@@ -15,7 +15,7 @@ namespace CKartta
         private short gSize;    //size of squares
         private int wdt;        //width of map in squares
         private int hgt;        //height of the map in squares
-        List<Crd> worldGrid = new List<Crd>();
+        List<Node> worldGrid = new List<Node>();
 
         //constructor
         public World(short gridSize, int width, int heigth)
@@ -28,16 +28,17 @@ namespace CKartta
             {                
                 for(int j = 0; j < hgt; j++)
                 {
-                    Crd temp = new Crd(i, j);
+
+                    Node temp = new Node(i, j);
                     worldGrid.Add(temp);
                 }
             }
         }
 
-        public List<Crd> GetList()
+        public List<Node> GetList()
         {
-            List<Crd> freezones = new List<Crd>(worldGrid);
-            return freezones;
+            List<Node> freeNodes= new List<Node>(worldGrid);
+            return freeNodes;
         }
 
         public void WaterLevels(List<Object> continents)
