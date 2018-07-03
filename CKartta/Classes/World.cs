@@ -20,7 +20,9 @@ namespace CKartta
         List<Node> worldGrid = new List<Node>();
 
         //constructor
-        public World(short gridSize, int width, int heigth)
+        public World() { } 
+        
+        public void WorldInit(short gridSize, int width, int heigth, Random Rnd)
         {
             gSize = gridSize;
             wdt = width;
@@ -30,8 +32,8 @@ namespace CKartta
             {                
                 for(int j = 0; j < hgt; j++)
                 {
-
-                    Node temp = new Node(i, j);
+                    int depth = Rnd.Next(0,2);
+                    Node temp = new Node(i, j, depth);
                     worldGrid.Add(temp);
                 }
             }

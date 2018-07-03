@@ -21,12 +21,19 @@ namespace CKartta
         public Brush color;
 
         //constructor
+        public Node(int Xcoordinate, int Ycoordinate, int depth)
+        {
+            x = Xcoordinate;
+            y = Ycoordinate;
+            elevation = depth;
+        }
+
+        //constructor
         public Node(int Xcoordinate, int Ycoordinate)
         {
             x = Xcoordinate;
             y = Ycoordinate;
         }
-
         //set neighbours
         public void SetNeighbours(List<Node> FreeNodes)
         {

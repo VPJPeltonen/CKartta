@@ -22,10 +22,9 @@ namespace CKartta
         private int Y;                          //starting Y
 
         //constructor
-        public Continent(Brush drawColor, List<Node> freeNodes, int hgt, int wdt)
+        public Continent(Brush drawColor, List<Node> freeNodes, int hgt, int wdt, Random Rnd)
         {         
             color = drawColor;
-            Random Rnd = new Random();
             bool startSet = true;
             depth = Rnd.Next(0, 10);
             while (startSet == true)
@@ -41,7 +40,7 @@ namespace CKartta
                         areas.Add(node);
                         freeNodes.Remove(node);
                         startSet = false;
-                        node.elevation = depth; //set the nodes elevation as the same as continents
+                        node.elevation += depth; //set the nodes elevation as the same as continents
                         node.color = color;
                         break;
                     }

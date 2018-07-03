@@ -20,15 +20,35 @@ namespace CKartta
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int GWidth = 88;
-        public int GHeight = 88;
+        public int GWidth = 100;
+        public int GHeight = 75;
+
+        //ui info
+        public string text1 { get; set; }
+        public string text2 { get; set; }
+        public string text3 { get; set; }
+
+        World mWorld = new World();
+        public string state = "none";
+        List<object> continents = new List<object>(); //continentlist
+        Canvas mainCanvas = new Canvas();
 
         public MainWindow()
         {
             InitializeComponent();
 
+            //ui text
+            text1 = "Width: " + GWidth;
+            text2 = "Height: " + GHeight;
+            text3 = "Width: " + GWidth;
+            panel.DataContext = this;
+            elevation.DataContext = this;
+
+            //create random
+            Random Rnd = new Random();
+
             //create a world
-            World mWorld = new World(8, GWidth, GHeight);
+            mWorld.WorldInit(8, GWidth, GHeight,Rnd);
 
             //get list of grid places
             List<Node> freeNodes = mWorld.GetList();
@@ -36,23 +56,20 @@ namespace CKartta
             //get neighbours for nodes
             foreach(Node node in freeNodes) { node.SetNeighbours(freeNodes); }
 
-            //create continents
-            List<object> continents = new List<object>(); //continentlist
-            continents.Add(new Continent(Brushes.Blue, freeNodes, GWidth, GHeight));
-            continents.Add(new Continent(Brushes.Red, freeNodes, GWidth, GHeight));
-            continents.Add(new Continent(Brushes.Green, freeNodes, GWidth, GHeight));
-            continents.Add(new Continent(Brushes.Yellow, freeNodes, GWidth, GHeight));
-            continents.Add(new Continent(Brushes.Orange, freeNodes, GWidth, GHeight));
-            continents.Add(new Continent(Brushes.Purple, freeNodes, GWidth, GHeight));
-            continents.Add(new Continent(Brushes.Black, freeNodes, GWidth, GHeight));
-            continents.Add(new Continent(Brushes.Aqua, freeNodes, GWidth, GHeight));
-            continents.Add(new Continent(Brushes.Salmon, freeNodes, GWidth, GHeight));
-            continents.Add(new Continent(Brushes.DeepSkyBlue, freeNodes, GWidth, GHeight));
-
-            var mainCanvas = new Canvas();
+            //create continents           
+            continents.Add(new Continent(Brushes.Blue, freeNodes, GWidth, GHeight,Rnd));
+            continents.Add(new Continent(Brushes.Red, freeNodes, GWidth, GHeight, Rnd));
+            continents.Add(new Continent(Brushes.Green, freeNodes, GWidth, GHeight, Rnd));
+            continents.Add(new Continent(Brushes.Yellow, freeNodes, GWidth, GHeight, Rnd));
+            continents.Add(new Continent(Brushes.Orange, freeNodes, GWidth, GHeight, Rnd));
+            continents.Add(new Continent(Brushes.Purple, freeNodes, GWidth, GHeight, Rnd));
+            continents.Add(new Continent(Brushes.Black, freeNodes, GWidth, GHeight, Rnd));
+            continents.Add(new Continent(Brushes.Aqua, freeNodes, GWidth, GHeight, Rnd));
+            continents.Add(new Continent(Brushes.Salmon, freeNodes, GWidth, GHeight, Rnd));
+            continents.Add(new Continent(Brushes.DeepSkyBlue, freeNodes, GWidth, GHeight, Rnd));
+           
             mainCanvas.Background = Brushes.Black;
             
-
             main.Content = mainCanvas; //attach  the grid to the window
             
             //spread continents
@@ -63,6 +80,19 @@ namespace CKartta
                 if (isEmpty) { break; }
             }
 
+            //set waterlevels
+            //mWorld.WaterLevels(continents);
+
+            //draw all continents
+            mWorld.DrawWorld(mainCanvas);
+
+            //add ui elements
+            mainCanvas.Children.Add(uigrid);
+
+        }
+
+        private void elevation_Click(object sender, RoutedEventArgs e)
+        {
             //set waterlevels
             mWorld.WaterLevels(continents);
 

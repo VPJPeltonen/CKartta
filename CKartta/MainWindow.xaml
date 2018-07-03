@@ -5,5 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CKartta"
         mc:Ignorable="d"
-        Title="A" Height="600" Width="800" Name ="main"/>
+        Title="A" Height="800" Width="800" Name ="main">
+    <Grid Name="uigrid" HorizontalAlignment="Left" Height="169" VerticalAlignment="Top" Width="790" Margin="0,599,0,0" RenderTransformOrigin="0.5,0.5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="202*"/>
+            <ColumnDefinition Width="589*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="elevation" Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="166" Click="elevation_Click" Height="88" Panel.ZIndex="20"/>
+        <StackPanel x:Name="panel"  Background="LightBlue"  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Height="58" Margin="10,106,10,10" Width="770" Grid.ColumnSpan="2">
+            <TextBlock x:Name="firstTextBlock" FontSize="30" Text="{Binding Path=text1}"/>
+            <TextBlock x:Name="secondTextBlock" FontSize="30" Text="{Binding Path=text2}"/>
+            <TextBlock x:Name="thirdTextBlock" FontSize="30" Text="{Binding Path=text3}"/>
+        </StackPanel>
+    </Grid>
+</Window>
     
