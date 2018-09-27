@@ -26,6 +26,7 @@ namespace CKartta
         {         
             color = drawColor;
             bool startSet = true;
+            //get depth of continent
             depth = Rnd.Next(0, 10);
             while (startSet == true)
             {
@@ -33,6 +34,20 @@ namespace CKartta
                 Y = Rnd.Next(0,wdt-1);
                 depth = Rnd.Next(0, 10);
                 Node temp = new Node(X, Y);
+                //check on the list of not take nodes if the node is free. start from column it most likely is in
+                for (int i = X*wdt; i < freeNodes.Count; i++)
+                {
+                    if (temp.x == freeNodes[i].x && temp.y == freeNodes[i].y){
+                        freeNodes[i].elevation += depth; //set the nodes elevation as the same as continents
+                        freeNodes[i].color = color;
+                        areas.Add(freeNodes[i]);
+                        freeNodes.Remove(freeNodes[i]);
+                        startSet = false;
+
+                        break;
+                    }
+                }
+                //if something goes wrong
                 foreach (Node node in freeNodes)
                 {
                     if (node.x == temp.x && node.y == temp.y) 
@@ -74,8 +89,7 @@ namespace CKartta
                             neighbour.elevation = depth; //set the nodes elevation as the same as continents
                             neighbour.color = color;
                             done = false;
-                        }
-
+                        } 
                     }
                     if (done)
                     {

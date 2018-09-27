@@ -73,8 +73,7 @@ namespace CKartta
             main.Content = mainCanvas; //attach  the grid to the window
             
             //spread continents
-            for (int i = 0; i <10000; i++)
-            {
+            while(true){
                 foreach(Continent continent in continents){continent.Spread(GWidth, freeNodes);}
                 bool isEmpty = !freeNodes.Any();
                 if (isEmpty) { break; }
