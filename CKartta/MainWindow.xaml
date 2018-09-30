@@ -11,7 +11,12 @@
             <ColumnDefinition Width="202*"/>
             <ColumnDefinition Width="589*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="elevation" Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="166" Click="elevation_Click" Height="88" Panel.ZIndex="20"/>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button x:Name="elevation" Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="166" Click="elevation_Click" Height="88" Panel.ZIndex="20" Grid.Column="0"/>
+        <Button x:Name="continentsButton" Content="Butston" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="166" Click="continent_Click" Height="88" Panel.ZIndex="20" Grid.Column="1"/>
         <StackPanel x:Name="panel"  Background="LightBlue"  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Height="58" Margin="10,106,10,10" Width="770" Grid.ColumnSpan="2">
             <TextBlock x:Name="firstTextBlock" FontSize="30" Text="{Binding Path=text1}"/>
             <TextBlock x:Name="secondTextBlock" FontSize="30" Text="{Binding Path=text2}"/>

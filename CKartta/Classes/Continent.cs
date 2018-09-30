@@ -16,6 +16,7 @@ namespace CKartta
     {
         public int depth;                      //how high does the continent stand
         public Brush color;                    //color the continent will be on screen
+        private Brush continentColor;           //color for just seeing continents
         List<Node> areas = new List<Node>();      //area coordinates list
         List<Node> doneAreas = new List<Node>();  //areas that cant spread anymore
         private int X;                          //starting X
@@ -25,14 +26,15 @@ namespace CKartta
         public Continent(Brush drawColor, List<Node> freeNodes, int hgt, int wdt, Random Rnd)
         {         
             color = drawColor;
+            continentColor = color;
             bool startSet = true;
             //get depth of continent
-            depth = Rnd.Next(0, 10);
+            depth = Rnd.Next(4, 6);
             while (startSet == true)
             {
                 X = Rnd.Next(0,hgt-1);
                 Y = Rnd.Next(0,wdt-1);
-                depth = Rnd.Next(0, 10);
+                depth = Rnd.Next(3, 7);
                 Node temp = new Node(X, Y);
                 //check on the list of not take nodes if the node is free. start from column it most likely is in
                 for (int i = X*wdt; i < freeNodes.Count; i++)
@@ -97,7 +99,28 @@ namespace CKartta
                         areas.Remove(spot);
                     }
                 }
+            }
+        }
 
+        //combine area lists
+        public void finishList(){
+            foreach(Node area in areas){
+                doneAreas.Add(area);
+            }
+            areas = null;
+        }
+
+        //show continents
+        public void continentColors(){
+            foreach(Node spot in doneAreas){spot.color = continentColor;}
+        }
+        
+        //show waterlevel
+        public void waterlevel(){
+            Brush temp = Brushes.Green;
+            if (depth <= 5){temp = Brushes.Blue;}   
+            foreach (Node spot in doneAreas){
+                spot.color = temp;
             }
         }
     }

@@ -45,31 +45,36 @@ namespace CKartta
             return freeNodes;
         }
 
+        //Set the waterlevels of the world
         public void WaterLevels(List<Object> continents)
         {
-            int averageLevel = 0;
-            foreach (Node node in worldGrid) { averageLevel += node.elevation; }
-            averageLevel = averageLevel / worldGrid.Count;
-            foreach (Node node in worldGrid)
-            {
-                if (node.elevation <= averageLevel) { node.color = Brushes.Blue; }
-                else { node.color = Brushes.Green; }
+            foreach(Continent cont in continents){
+                cont.waterlevel();
             }
         }
+
+        //show continents
+        public void ShowContinents(List<Object> continents){
+            foreach(Continent continent in continents){
+                continent.continentColors();
+            }
+        }
+
+        //smooth world
+        public void Smooth(int smoothTime){
+            for (int i = 0; i <= smoothTime; i++){
+                foreach(Node node in worldGrid){
+                    node.Smooth();
+                } 
+            }
+        } 
 
         //draw the nodes
         public void DrawWorld(Canvas mainCanvas)
         {
             foreach (Node node in worldGrid)
             {
-                Rectangle temp = new Rectangle
-                {
-                    Stroke = node.color,
-                    StrokeThickness = 8
-                };
-                Canvas.SetLeft(temp, node.x * 8);
-                Canvas.SetTop(temp, node.y * 8);
-                mainCanvas.Children.Add(temp);
+                node.draw(mainCanvas);
             }
         }
 

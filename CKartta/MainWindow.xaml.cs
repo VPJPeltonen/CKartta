@@ -72,15 +72,17 @@ namespace CKartta
             
             main.Content = mainCanvas; //attach  the grid to the window
             
-            //spread continents
+            //spread continents---Slow and need to find out a better way!
             while(true){
                 foreach(Continent continent in continents){continent.Spread(GWidth, freeNodes);}
                 bool isEmpty = !freeNodes.Any();
                 if (isEmpty) { break; }
             }
+            //clean some lists
+            foreach(Continent continent in continents){continent.finishList();}
 
-            //set waterlevels
-            //mWorld.WaterLevels(continents);
+            //smooth
+            mWorld.Smooth(1);
 
             //draw all continents
             mWorld.DrawWorld(mainCanvas);
@@ -94,6 +96,14 @@ namespace CKartta
         {
             //set waterlevels
             mWorld.WaterLevels(continents);
+
+            //draw all continents
+            mWorld.DrawWorld(mainCanvas);
+        }
+        private void continent_Click(object sender, RoutedEventArgs e)
+        {
+            //set waterlevels
+            mWorld.ShowContinents(continents);
 
             //draw all continents
             mWorld.DrawWorld(mainCanvas);
