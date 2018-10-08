@@ -1,17 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Media;
 
-/// <summary>
-/// Summary description for Class1
-/// </summary>
-namespace CKartta
+namespace CKartta.Classes
 {
     class ColorsStorage
     {
-        public ColorsStorage()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
     }
 }
