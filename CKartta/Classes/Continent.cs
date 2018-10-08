@@ -21,6 +21,7 @@ namespace CKartta
         List<Node> doneAreas = new List<Node>();  //areas that cant spread anymore
         private int X;                          //starting X
         private int Y;                          //starting Y
+        private int dir;                        //direction the continent moves
 
         //constructor
         public Continent(Brush drawColor, List<Node> freeNodes, int hgt, int wdt, Random Rnd)
@@ -110,16 +111,5 @@ namespace CKartta
                 spot.color = temp;
             }
         }
-
-        //find neighbours
-        /*public void neighbours(){
-            foreach(Node area in doneAreas){
-                foreach(Node n in area.neighbours){
-                    if (n.color != color){
-
-                    }                                               
-                }
-            }
-        }*/
     }
 }

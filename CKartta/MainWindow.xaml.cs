@@ -44,8 +44,9 @@ namespace CKartta
             panel.DataContext = this;
             elevation.DataContext = this;
 
-            //create random
+            //create random & colorstorage
             Random Rnd = new Random();
+            ColorsStorage storage = new ColorsStorage();
 
             //create a world
             mWorld.WorldInit(8, GWidth, GHeight,Rnd, mainCanvas);
