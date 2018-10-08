@@ -45,7 +45,6 @@ namespace CKartta
                         areas.Add(freeNodes[i]);
                         freeNodes.Remove(freeNodes[i]);
                         startSet = false;
-
                         break;
                     }
                 }
@@ -63,24 +62,18 @@ namespace CKartta
                     }
                 }       
             }
-            
         }
-
 
         //spread continent across the screen
         public void Spread(int wdt, List<Node> freeNodes)
         {
             Random Rnd = new Random(2);
-            List<Node> tempareas = new List<Node>(areas);
-            
+            List<Node> tempareas = new List<Node>(areas);            
             foreach (Node spot in tempareas)
             {
                 int flip = Rnd.Next(0, 2);
                 if (flip == 1)
                 {
-                    //foreach (Node node in freeNodes.ToList())
-                    //{
-                    bool done = true;
                     List<Node> tempNeighbours = new List<Node>(spot.neighbours);
                     foreach (Node neighbour in tempNeighbours)
                     {                        
@@ -90,23 +83,17 @@ namespace CKartta
                             freeNodes.Remove(neighbour);
                             neighbour.elevation = depth; //set the nodes elevation as the same as continents
                             neighbour.color = color;
-                            done = false;
                         } 
                     }
-                    if (done)
-                    {
-                        doneAreas.Add(spot);
-                        areas.Remove(spot);
-                    }
+                    doneAreas.Add(spot);
+                    areas.Remove(spot);
                 }
             }
         }
 
         //combine area lists
         public void finishList(){
-            foreach(Node area in areas){
-                doneAreas.Add(area);
-            }
+            foreach(Node area in areas){doneAreas.Add(area);}
             areas = null;
         }
 
@@ -123,5 +110,16 @@ namespace CKartta
                 spot.color = temp;
             }
         }
+
+        //find neighbours
+        /*public void neighbours(){
+            foreach(Node area in doneAreas){
+                foreach(Node n in area.neighbours){
+                    if (n.color != color){
+
+                    }                                               
+                }
+            }
+        }*/
     }
 }

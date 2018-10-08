@@ -14,14 +14,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace CKartta
-{
+{   
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         public int GWidth = 100;
-        public int GHeight = 75;
+        public int GHeight = 80;
 
         //ui info
         public string text1 { get; set; }
@@ -48,13 +48,13 @@ namespace CKartta
             Random Rnd = new Random();
 
             //create a world
-            mWorld.WorldInit(8, GWidth, GHeight,Rnd);
+            mWorld.WorldInit(8, GWidth, GHeight,Rnd, mainCanvas);
 
             //get list of grid places
             List<Node> freeNodes = mWorld.GetList();
 
             //get neighbours for nodes
-            foreach(Node node in freeNodes) { node.SetNeighbours(freeNodes); }
+            foreach(Node node in freeNodes) { node.SetNeighbours(freeNodes,GWidth,GHeight); }
 
             //create continents           
             continents.Add(new Continent(Brushes.Blue, freeNodes, GWidth, GHeight,Rnd));
@@ -74,7 +74,9 @@ namespace CKartta
             
             //spread continents---Slow and need to find out a better way!
             while(true){
-                foreach(Continent continent in continents){continent.Spread(GWidth, freeNodes);}
+                foreach(Continent continent in continents){
+                    continent.Spread(GWidth, freeNodes);
+                }
                 bool isEmpty = !freeNodes.Any();
                 if (isEmpty) { break; }
             }
@@ -82,14 +84,15 @@ namespace CKartta
             foreach(Continent continent in continents){continent.finishList();}
 
             //smooth
-            mWorld.Smooth(1);
+            //mWorld.Smooth(1);
+
+            mWorld.continentConflicts();
 
             //draw all continents
             mWorld.DrawWorld(mainCanvas);
 
             //add ui elements
             mainCanvas.Children.Add(uigrid);
-
         }
 
         private void elevation_Click(object sender, RoutedEventArgs e)
@@ -109,6 +112,14 @@ namespace CKartta
             mWorld.DrawWorld(mainCanvas);
         }
 
+        private void conflict_Click(object sender, RoutedEventArgs e)
+        {
+            //show conflicts
+            mWorld.ShowConflict();
+
+            //draw all continents
+            mWorld.DrawWorld(mainCanvas);
+        }
     }
 
 }

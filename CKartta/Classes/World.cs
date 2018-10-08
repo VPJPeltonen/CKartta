@@ -18,11 +18,13 @@ namespace CKartta
         private int wdt;        //width of map in squares
         private int hgt;        //height of the map in squares
         List<Node> worldGrid = new List<Node>();
+        List<List<Node>> nodeGrid = new List<List<Node>>(); //new list of lists for grid
+        List<Node> conConflicts = new List<Node>(); //list of conflict zones
 
         //constructor
         public World() { } 
         
-        public void WorldInit(short gridSize, int width, int heigth, Random Rnd)
+        public void WorldInit(short gridSize, int width, int heigth, Random Rnd, Canvas mainCanvas)
         {
             gSize = gridSize;
             wdt = width;
@@ -30,12 +32,15 @@ namespace CKartta
             //create the grid
             for (int i = 0; i < wdt; i++)
             {                
+                List<Node> tempList = new List<Node>();
                 for(int j = 0; j < hgt; j++)
                 {
                     int depth = Rnd.Next(0,2);
-                    Node temp = new Node(i, j, depth);
+                    Node temp = new Node(i, j, depth, mainCanvas);
                     worldGrid.Add(temp);
+                    tempList.Add(temp);
                 }
+                nodeGrid.Add(tempList);
             }
         }
 
@@ -60,6 +65,13 @@ namespace CKartta
             }
         }
 
+        //show conflicts
+        public void ShowConflict(){
+            foreach(Node con in conConflicts){
+                con.color = Brushes.Red;
+            }
+        }
+
         //smooth world
         public void Smooth(int smoothTime){
             for (int i = 0; i <= smoothTime; i++){
@@ -78,5 +90,15 @@ namespace CKartta
             }
         }
 
+        //find conflict
+        public void continentConflicts(){
+            int tempX,tempY;
+            foreach (Node node in worldGrid)
+            {
+                if(node.isConflict()){
+                    conConflicts.Add(node);
+                }
+            }
+        }
     }
 }

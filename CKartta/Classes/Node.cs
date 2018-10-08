@@ -20,45 +20,56 @@ namespace CKartta
         public List<Node> neighbours = new List<Node>();    //list of neighbours
         public int elevation;                               //how much elevation does the spot have
         public Brush color;
+        public Rectangle visual = new Rectangle{
+            Stroke = Brushes.White,
+            StrokeThickness = 8
+        };
 
         //constructor
-        public Node(int Xcoordinate, int Ycoordinate, int depth)
+        public Node(int Xcoordinate, int Ycoordinate, int depth, Canvas mainCanvas)
         {
             x = Xcoordinate;
             y = Ycoordinate;
             elevation = depth;
+            makeRectangle(mainCanvas);
         }
 
-        //constructor
+        //constructor for making a temp node 
         public Node(int Xcoordinate, int Ycoordinate)
         {
             x = Xcoordinate;
             y = Ycoordinate;
         }
+
+        //make rectangle
+        private void makeRectangle(Canvas mainCanvas){
+            //create link
+            Canvas.SetLeft(visual, x * 8);
+            Canvas.SetTop(visual, y * 8);
+            mainCanvas.Children.Add(visual);
+        }
+
         //set neighbours
-        public void SetNeighbours(List<Node> FreeNodes)
+        public void SetNeighbours(List<Node> FreeNodes,int width,int height)
         {
+            int nAmount = 8;
+            if (x == 0){nAmount -= 1;}//check left
+            if (x == width){nAmount -= 1;}//check right
+            if (y == 0){nAmount -= 1;}//check top
+            if (y == height){nAmount -= 1;}//check bottom
             foreach(Node node in FreeNodes)
-            {
-                //right
-                if (node.x == x+1 && node.y == y){neighbours.Add(node);}
-                //left
-                if (node.x == x-1 && node.y == y){neighbours.Add(node);}
-                //up
-                if (node.x == x && node.y == y-1){neighbours.Add(node);}
-                //down
-                if (node.x == x && node.y == y+1){neighbours.Add(node);}
-                //corners
-                //topleft
-                if (node.x == x-1 && node.y == y-1){neighbours.Add(node);}
-                //topright
-                if (node.x == x+1 && node.y == y-1){neighbours.Add(node);}
-                //bottomleft
-                if (node.x == x-1 && node.y == y+1){neighbours.Add(node);}
-                //bottomright
-                if (node.x == x+1 && node.y == y+1){neighbours.Add(node);}
+            {                
+                if (node.x == x+1 && node.y == y){neighbours.Add(node);}//right              
+                if (node.x == x-1 && node.y == y){neighbours.Add(node);}//left               
+                if (node.x == x && node.y == y-1){neighbours.Add(node);}//up                
+                if (node.x == x && node.y == y+1){neighbours.Add(node);}//down
+                //corners                
+                if (node.x == x-1 && node.y == y-1){neighbours.Add(node);}//topleft                
+                if (node.x == x+1 && node.y == y-1){neighbours.Add(node);}//topright                
+                if (node.x == x-1 && node.y == y+1){neighbours.Add(node);}//bottomleft                
+                if (node.x == x+1 && node.y == y+1){neighbours.Add(node);}//bottomright
                 //stop if all neightbours found
-                if (neighbours.Count == 8){break;}
+                if (neighbours.Count == nAmount){break;}
             }
         }
 
@@ -77,16 +88,19 @@ namespace CKartta
                 elevation = elevation-(elevation-average)/2;
             }
         }
-
+        //set color for canvas
         public void draw(Canvas mainCanvas){
-            Rectangle temp = new Rectangle
-            {
-                Stroke = color,
-                StrokeThickness = 8
-            };
-            Canvas.SetLeft(temp, x * 8);
-            Canvas.SetTop(temp, y * 8);
-            mainCanvas.Children.Add(temp);
+            visual.Stroke = color;
+        }
+
+        //checks if node is on border of continents
+        public bool isConflict(){
+            foreach(Node neighbour in neighbours){
+                if (neighbour.color != color){
+                    return true;
+                } 
+            }
+            return false;
         }
     }
 }
