@@ -30,7 +30,7 @@ namespace CKartta
 
         World mWorld = new World();
         public string state = "none";
-        List<object> continents = new List<object>(); //continentlist
+        List<Continent> continents = new List<Continent>(); //continentlist
         Canvas mainCanvas = new Canvas();
 
         public MainWindow()
@@ -46,7 +46,7 @@ namespace CKartta
 
             //create random & colorstorage
             Random Rnd = new Random();
-            //ColorsStorage storage = new ColorsStorage();
+            ColorsStorage cStorage = new ColorsStorage();
 
             //create a world
             mWorld.WorldInit(8, GWidth, GHeight,Rnd, mainCanvas);
@@ -57,8 +57,9 @@ namespace CKartta
             //get neighbours for nodes
             foreach(Node node in freeNodes) { node.SetNeighbours(freeNodes,GWidth,GHeight); }
 
-            //create continents           
-            continents.Add(new Continent(Brushes.Blue, freeNodes, GWidth, GHeight,Rnd));
+            //create continents    
+            continents = mWorld.createContinents(10, freeNodes, GWidth, GHeight, Rnd);
+            /*continents.Add(new Continent(Brushes.Blue, freeNodes, GWidth, GHeight,Rnd));
             continents.Add(new Continent(Brushes.Red, freeNodes, GWidth, GHeight, Rnd));
             continents.Add(new Continent(Brushes.Green, freeNodes, GWidth, GHeight, Rnd));
             continents.Add(new Continent(Brushes.Yellow, freeNodes, GWidth, GHeight, Rnd));
@@ -68,7 +69,7 @@ namespace CKartta
             continents.Add(new Continent(Brushes.Aqua, freeNodes, GWidth, GHeight, Rnd));
             continents.Add(new Continent(Brushes.Salmon, freeNodes, GWidth, GHeight, Rnd));
             continents.Add(new Continent(Brushes.DeepSkyBlue, freeNodes, GWidth, GHeight, Rnd));
-           
+           */
             mainCanvas.Background = Brushes.Black;
             
             main.Content = mainCanvas; //attach  the grid to the window

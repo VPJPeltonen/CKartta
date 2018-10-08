@@ -20,7 +20,7 @@ namespace CKartta
         List<Node> worldGrid = new List<Node>();
         List<List<Node>> nodeGrid = new List<List<Node>>(); //new list of lists for grid
         List<Node> conConflicts = new List<Node>(); //list of conflict zones
-        List<object> continents = new List<object>(); //continentlist
+        List<Continent> continents = new List<Continent>(); //continentlist
 
         //constructor
         public World() { } 
@@ -52,14 +52,16 @@ namespace CKartta
         }
 
         //create continents
-        /*public void createContinents(int amount){
+        public List<Continent> createContinents(int amount,List<Node> freeNodes,int GWidth,int GHeight,Random Rnd){
+            ColorsStorage temp = new ColorsStorage();
             for(int i = 0; i<amount;i++){
-                continents.Add(new Continent(Brushes.Blue, freeNodes, GWidth, GHeight,Rnd));
+                continents.Add(new Continent(temp.colors[i], freeNodes, GWidth, GHeight,Rnd));
             }
-        }*/
+            return continents;
+        }
 
         //Set the waterlevels of the world
-        public void WaterLevels(List<Object> continents)
+        public void WaterLevels(List<Continent> continents)
         {
             foreach(Continent cont in continents){
                 cont.waterlevel();
@@ -77,7 +79,7 @@ namespace CKartta
         }
         //-----------------------visual stuff------------------------------------------------
         //show continents
-        public void ShowContinents(List<Object> continents){
+        public void ShowContinents(List<Continent> continents){
             foreach(Continent continent in continents){
                 continent.continentColors();
             }
