@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace CKartta
 {   
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public int GWidth = 100;
@@ -59,17 +56,7 @@ namespace CKartta
 
             //create continents    
             continents = mWorld.createContinents(10, freeNodes, GWidth, GHeight, Rnd);
-            /*continents.Add(new Continent(Brushes.Blue, freeNodes, GWidth, GHeight,Rnd));
-            continents.Add(new Continent(Brushes.Red, freeNodes, GWidth, GHeight, Rnd));
-            continents.Add(new Continent(Brushes.Green, freeNodes, GWidth, GHeight, Rnd));
-            continents.Add(new Continent(Brushes.Yellow, freeNodes, GWidth, GHeight, Rnd));
-            continents.Add(new Continent(Brushes.Orange, freeNodes, GWidth, GHeight, Rnd));
-            continents.Add(new Continent(Brushes.Purple, freeNodes, GWidth, GHeight, Rnd));
-            continents.Add(new Continent(Brushes.Black, freeNodes, GWidth, GHeight, Rnd));
-            continents.Add(new Continent(Brushes.Aqua, freeNodes, GWidth, GHeight, Rnd));
-            continents.Add(new Continent(Brushes.Salmon, freeNodes, GWidth, GHeight, Rnd));
-            continents.Add(new Continent(Brushes.DeepSkyBlue, freeNodes, GWidth, GHeight, Rnd));
-           */
+
             mainCanvas.Background = Brushes.Black;
             
             main.Content = mainCanvas; //attach  the grid to the window

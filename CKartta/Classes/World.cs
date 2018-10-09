@@ -60,35 +60,34 @@ namespace CKartta
             return continents;
         }
 
-        //Set the waterlevels of the world
-        public void WaterLevels(List<Continent> continents)
-        {
-            foreach(Continent cont in continents){
-                cont.waterlevel();
-            }
-        }
+
 
         //find conflict
         public void continentConflicts(){
-            foreach (Node node in worldGrid)
-            {
-                if(node.isConflict()){
-                    conConflicts.Add(node);
-                }
+            foreach(Continent temp in continents){
+                temp.conflicts();
             }
         }
         //-----------------------visual stuff------------------------------------------------
         //show continents
         public void ShowContinents(List<Continent> continents){
             foreach(Continent continent in continents){
-                continent.continentColors();
+                continent.colorize("continents");
             }
         }
 
         //show conflicts
         public void ShowConflict(){
-            foreach(Node con in conConflicts){
-                con.color = Brushes.Red;
+            foreach(Continent continent in continents){
+                continent.colorize("edges");
+            }
+        }
+
+        //Set the waterlevels of the world
+        public void WaterLevels(List<Continent> continents)
+        {
+            foreach(Continent continent in continents){
+                continent.colorize("water");
             }
         }
 

@@ -19,6 +19,7 @@ namespace CKartta
         private Brush continentColor;           //color for just seeing continents
         List<Node> areas = new List<Node>();      //area coordinates list
         List<Node> doneAreas = new List<Node>();  //areas that cant spread anymore
+        List<Node> edges = new List<Node>();       //list of edge nodes
         private int X;                          //starting X
         private int Y;                          //starting Y
         private int dir;                        //direction the continent moves
@@ -98,18 +99,36 @@ namespace CKartta
             areas = null;
         }
 
-        //show continents
-        public void continentColors(){
-            foreach(Node spot in doneAreas){spot.color = continentColor;}
-        }
-        
-        //show waterlevel
-        public void waterlevel(){
-            Brush temp = Brushes.Green;
-            if (depth <= 5){temp = Brushes.Blue;}   
-            foreach (Node spot in doneAreas){
-                spot.color = temp;
+        //find conflict
+        public void conflicts(){
+            foreach (Node node in doneAreas)
+            {
+                if(node.isConflict()){
+                    edges.Add(node);
+                }
             }
         }
+
+        //-----------------------visual stuff-----------------------------
+
+        public void colorize(string selection){
+            switch(selection){
+                case "continents":
+                    foreach(Node spot in doneAreas){spot.color = continentColor;}
+                    break;
+                case "water":
+                    Brush temp = Brushes.Green;
+                    if (depth <= 5){temp = Brushes.Blue;}   
+                    foreach (Node spot in doneAreas){
+                        spot.color = temp;
+                    }
+                    break;
+                case "edges":
+                    foreach(Node con in edges){
+                        con.color = Brushes.Red;
+                    }
+                    break;
+            }
+        }                               
     }
 }
