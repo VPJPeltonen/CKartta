@@ -18,8 +18,9 @@ namespace CKartta
         public int x;                                       //x coordinate
         public int y;                                       //y coordinate 
         public List<Node> neighbours = new List<Node>();    //list of neighbours
-        public int elevation;                               //how much elevation does the spot have
+        public int elevation = 0;                               //how much elevation does the spot have
         public Brush color;
+        public int dir;
         public Rectangle visual = new Rectangle{
             Stroke = Brushes.White,
             StrokeThickness = 8
@@ -75,19 +76,13 @@ namespace CKartta
 
         //adjust height so there isnt too great differences between neighbours
         public void Smooth(){
-            int average = 0;
-            //get average of neighbours
             foreach(Node neighbour in neighbours){
-                average += neighbour.elevation;        
-            } 
-            average = average/neighbours.Count;
-            //move elevation
-            if (average >= elevation ){
-                elevation = elevation+(average-elevation)/2;
-            }else{
-                elevation = elevation-(elevation-average)/2;
+                if (neighbour.elevation < elevation){
+                    neighbour.elevation = elevation-1;
+                }
             }
         }
+
         //set color for canvas
         public void draw(Canvas mainCanvas){
             visual.Stroke = color;
@@ -101,6 +96,16 @@ namespace CKartta
                 } 
             }
             return false;
+        }
+        
+        //find out what direction the nearby continent is going
+        public int conflictContinent(){
+            foreach(Node neighbour in neighbours){
+                if (neighbour.color != color){
+                    return neighbour.dir;
+                }
+            }
+            return 0;
         }
     }
 }

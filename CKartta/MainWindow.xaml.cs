@@ -55,26 +55,26 @@ namespace CKartta
             foreach(Node node in freeNodes) { node.SetNeighbours(freeNodes,GWidth,GHeight); }
 
             //create continents    
-            continents = mWorld.createContinents(10, freeNodes, GWidth, GHeight, Rnd);
+            continents = mWorld.createContinents(12, freeNodes, GWidth, GHeight, Rnd);
 
-            mainCanvas.Background = Brushes.Black;
+            mainCanvas.Background = Brushes.White;
             
             main.Content = mainCanvas; //attach  the grid to the window
             
             //spread continents---Slow and need to find out a better way!
-            while(true){
+            while (freeNodes.Count != 0){
                 foreach(Continent continent in continents){
                     continent.Spread(GWidth, freeNodes);
                 }
-                bool isEmpty = !freeNodes.Any();
-                if (isEmpty) { break; }
             }
+
             //clean some lists
             foreach(Continent continent in continents){continent.finishList();}
 
             //smooth
             //mWorld.Smooth(1);
 
+            //find edges of continents
             mWorld.continentConflicts();
 
             //draw all continents
@@ -87,16 +87,14 @@ namespace CKartta
         private void elevation_Click(object sender, RoutedEventArgs e)
         {
             //set waterlevels
-            mWorld.WaterLevels(continents);
-
+            mWorld.show("height");
             //draw all continents
             mWorld.DrawWorld(mainCanvas);
         }
         private void continent_Click(object sender, RoutedEventArgs e)
         {
             //set waterlevels
-            mWorld.ShowContinents(continents);
-
+            mWorld.show("continents");
             //draw all continents
             mWorld.DrawWorld(mainCanvas);
         }
@@ -104,11 +102,18 @@ namespace CKartta
         private void conflict_Click(object sender, RoutedEventArgs e)
         {
             //show conflicts
-            mWorld.ShowConflict();
+            mWorld.show("edges");
+            //draw all continents
+            mWorld.DrawWorld(mainCanvas);
+        }
+        private void smooth_Click(object sender, RoutedEventArgs e)
+        {
+            //show conflicts
+            mWorld.Smooth();
+            mWorld.show("height");
 
             //draw all continents
             mWorld.DrawWorld(mainCanvas);
         }
     }
-
 }

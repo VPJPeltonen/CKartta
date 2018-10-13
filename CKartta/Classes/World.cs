@@ -31,18 +31,7 @@ namespace CKartta
             wdt = width;
             hgt = heigth;
             //create the grid
-            for (int i = 0; i < wdt; i++)
-            {                
-                List<Node> tempList = new List<Node>();
-                for(int j = 0; j < hgt; j++)
-                {
-                    int depth = Rnd.Next(0,2);
-                    Node temp = new Node(i, j, depth, mainCanvas);
-                    worldGrid.Add(temp);
-                    tempList.Add(temp);
-                }
-                nodeGrid.Add(tempList);
-            }
+            makeGrid(Rnd,mainCanvas);
         }
 
         public List<Node> GetList()
@@ -60,46 +49,63 @@ namespace CKartta
             return continents;
         }
 
-
-
         //find conflict
         public void continentConflicts(){
             foreach(Continent temp in continents){
                 temp.conflicts();
+                temp.boundaryEffect();
             }
         }
-        //-----------------------visual stuff------------------------------------------------
-        //show continents
-        public void ShowContinents(List<Continent> continents){
-            foreach(Continent continent in continents){
-                continent.colorize("continents");
-            }
-        }
-
-        //show conflicts
-        public void ShowConflict(){
-            foreach(Continent continent in continents){
-                continent.colorize("edges");
-            }
-        }
-
-        //Set the waterlevels of the world
-        public void WaterLevels(List<Continent> continents)
-        {
-            foreach(Continent continent in continents){
-                continent.colorize("water");
+        //random
+        public void erode(){
+            Random coin = new Random();
+            int flip;
+            foreach(Node node in worldGrid){
+                flip = coin.Next(0,32);
+                if (flip == 1){
+                    node.elevation += 2;
+                }
             }
         }
 
         //smooth world
-        public void Smooth(int smoothTime){
-            for (int i = 0; i <= smoothTime; i++){
+        public void Smooth(){
+            //erode();
+            Queue<Node> highPoints = new Queue<Node>();
+            for(int i = 15 ;i > 1;i--){
                 foreach(Node node in worldGrid){
-                    node.Smooth();
+                    if(node.elevation == i){highPoints.Enqueue(node);}
                 } 
+                while(highPoints.Count != 0){
+                    Node temp = highPoints.Dequeue();
+                    temp.Smooth();
+                }
             }
-        } 
+        }
 
+        //-----------------------visual stuff------------------------------------------------
+        public void show(string selection){
+            //int i is the amount land is either above or below waterlevel
+            if (selection == "height"){
+                ColorsStorage color = new ColorsStorage();
+                foreach(Node node in worldGrid){
+                    if (node.elevation >= 5){
+                        int i = node.elevation-5;
+                        Brush tempColor = color.land[i];
+                        node.color = tempColor;
+                    }else{
+                        int i = Math.Abs(node.elevation-4);
+                        Brush tempColor = color.water[i];
+                        node.color = tempColor;
+                    }
+                }
+            }else{
+                foreach(Continent continent in continents){
+                    continent.colorize(selection);
+                }
+            }
+        }
+        
         //draw the nodes
         public void DrawWorld(Canvas mainCanvas)
         {
@@ -109,6 +115,20 @@ namespace CKartta
             }
         }
 
-
+        //------------------private funktions---------------------------------------------
+        public void makeGrid(Random Rnd, Canvas mainCanvas){
+            for (int i = 0; i < wdt; i++)
+            {                
+                List<Node> tempList = new List<Node>();
+                for(int j = 0; j < hgt; j++)
+                {
+                    int depth = Rnd.Next(0,2);
+                    Node temp = new Node(i, j, depth, mainCanvas);
+                    worldGrid.Add(temp);
+                    tempList.Add(temp);
+                }
+                nodeGrid.Add(tempList);
+            }
+        }
     }
 }

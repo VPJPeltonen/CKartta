@@ -20,6 +20,7 @@ namespace CKartta
         List<Node> areas = new List<Node>();      //area coordinates list
         List<Node> doneAreas = new List<Node>();  //areas that cant spread anymore
         List<Node> edges = new List<Node>();       //list of edge nodes
+        List<int> edgeDir = new List<int>();    //direction edges are moving
         private int X;                          //starting X
         private int Y;                          //starting Y
         private int dir;                        //direction the continent moves
@@ -31,12 +32,16 @@ namespace CKartta
             continentColor = color;
             bool startSet = true;
             //get depth of continent
-            depth = Rnd.Next(4, 6);
+            //depth = Rnd.Next(4, 6);
+            dir = Rnd.Next(0, 360);
             while (startSet == true)
             {
                 X = Rnd.Next(0,hgt-1);
                 Y = Rnd.Next(0,wdt-1);
-                depth = Rnd.Next(3, 7);
+                int flip = Rnd.Next(0, 6);
+                if (flip == 1){depth = 6;}
+                else if(flip == 2){depth = 7;}
+                else{depth = 2;}
                 Node temp = new Node(X, Y);
                 //check on the list of not take nodes if the node is free. start from column it most likely is in
                 for (int i = X*wdt; i < freeNodes.Count; i++)
@@ -44,7 +49,9 @@ namespace CKartta
                     if (temp.x == freeNodes[i].x && temp.y == freeNodes[i].y){
                         freeNodes[i].elevation += depth; //set the nodes elevation as the same as continents
                         freeNodes[i].color = color;
+                        freeNodes[i].dir = dir;
                         areas.Add(freeNodes[i]);
+                        freeNodes[i].elevation = depth;
                         freeNodes.Remove(freeNodes[i]);
                         startSet = false;
                         break;
@@ -105,30 +112,96 @@ namespace CKartta
             {
                 if(node.isConflict()){
                     edges.Add(node);
+                    edgeDir.Add(node.conflictContinent());
+                }
+            }
+        }
+
+        //compare stuff
+        public void boundaryEffect(){
+            Random coin = new Random();
+            for(int i= 0; i < edges.Count();i++){
+                Node node = edges[i]; 
+                //what part of edge it is 1 means up, 2 means right, -1 means left and -2 means down
+                int edgeDirection = nodeDirection(node);
+                int conDir = conDirection(dir);
+                int neighbourDirection = conDirection(edgeDir[i]);
+
+                //if directions are opposite(if same x/y scale && not same direction)
+                if(Math.Abs(conDir) == Math.Abs(neighbourDirection) && neighbourDirection != conDir){
+                    //if continents are crashing
+                    if(edgeDirection == conDir){
+                        node.elevation += 5;
+                    }
+                    //if continents are moving away from eachother
+                    else{
+                        node.elevation -= 3;
+                    }                    
+                }else{
+                    if(Math.Abs(conDir) == Math.Abs(neighbourDirection)){
+                        int flip = coin.Next(0,16);
+                        if (flip == 1){
+                            node.elevation += 2;
+                        }                        
+                    }
                 }
             }
         }
 
         //-----------------------visual stuff-----------------------------
-
         public void colorize(string selection){
             switch(selection){
                 case "continents":
                     foreach(Node spot in doneAreas){spot.color = continentColor;}
                     break;
                 case "water":
-                    Brush temp = Brushes.Green;
-                    if (depth <= 5){temp = Brushes.Blue;}   
-                    foreach (Node spot in doneAreas){
-                        spot.color = temp;
+                    ColorsStorage colors = new ColorsStorage();
+                    foreach (Node spot in doneAreas){                        
+                        Brush temp = colors.deepWater;
+                        if (spot.elevation == 4){temp = colors.lowWater;}
+                        else if(spot.elevation == 5){temp = colors.lowLand;}
+                        else if(spot.elevation == 6){temp = colors.midLand;}
+                        else if(spot.elevation >= 7){temp = colors.highLand;}
+                        spot.color = temp;                        
                     }
                     break;
-                case "edges":
+                case "edges":                                        
                     foreach(Node con in edges){
                         con.color = Brushes.Red;
                     }
                     break;
+                case "height":
+                    break;
             }
-        }                               
+        } 
+
+        //------------------private functions---------------------- 
+        private int nodeDirection(Node node){
+            int xDif = X-node.x;
+            int yDif = Y-node.y;
+            //if horizontal difference is larger than vertical
+            if (Math.Abs(xDif) >= Math.Abs(yDif)){
+                if(node.x > X){ return 2; }//right
+                else{return -2;}//left
+            }else{
+                if (node.y > Y){return -1; }//down
+                else {return 1;}//up
+            }                
+        }
+
+        private int conDirection(int dir){
+            if(dir <= 45 || dir >= 315){
+                return 1;//up
+            }
+            else if(dir > 45 && dir < 135){
+                return 2;//right
+            }
+            else if(dir > 135 && dir < 225){
+                return -1;//down
+            }                           
+            else{
+                return -2;//left
+            }
+        }
     }
 }
