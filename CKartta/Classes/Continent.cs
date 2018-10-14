@@ -16,7 +16,7 @@ namespace CKartta
     {
         public int depth;                      //how high does the continent stand
         public Brush color;                    //color the continent will be on screen
-        private Brush continentColor;           //color for just seeing continents
+        public Brush continentColor;           //color for just seeing continents
         List<Node> areas = new List<Node>();      //area coordinates list
         List<Node> doneAreas = new List<Node>();  //areas that cant spread anymore
         List<Node> edges = new List<Node>();       //list of edge nodes
@@ -48,7 +48,7 @@ namespace CKartta
                 {
                     if (temp.x == freeNodes[i].x && temp.y == freeNodes[i].y){
                         freeNodes[i].elevation += depth; //set the nodes elevation as the same as continents
-                        freeNodes[i].color = color;
+                        freeNodes[i].continentColor = color;
                         freeNodes[i].dir = dir;
                         areas.Add(freeNodes[i]);
                         freeNodes[i].elevation = depth;
@@ -56,20 +56,7 @@ namespace CKartta
                         startSet = false;
                         break;
                     }
-                }
-                //if something goes wrong
-                foreach (Node node in freeNodes)
-                {
-                    if (node.x == temp.x && node.y == temp.y) 
-                    {
-                        areas.Add(node);
-                        freeNodes.Remove(node);
-                        startSet = false;
-                        node.elevation += depth; //set the nodes elevation as the same as continents
-                        node.color = color;
-                        break;
-                    }
-                }       
+                }     
             }
         }
 
@@ -91,7 +78,7 @@ namespace CKartta
                             areas.Add(neighbour);
                             freeNodes.Remove(neighbour);
                             neighbour.elevation = depth; //set the nodes elevation as the same as continents
-                            neighbour.color = color;
+                            neighbour.continentColor = color;
                         } 
                     }
                     doneAreas.Add(spot);
@@ -137,11 +124,11 @@ namespace CKartta
                     else{
                         node.elevation -= 3;
                     }                    
-                }else{
-                    if(Math.Abs(conDir) == Math.Abs(neighbourDirection)){
+                }else{                    if(Math.Abs(conDir) == Math.Abs(neighbourDirection)){
                         int flip = coin.Next(0,16);
                         if (flip == 1){
-                            node.elevation += 2;
+                            if (node.elevation == 2){node.elevation += 3;}
+                            else{node.elevation += 2;}
                         }                        
                     }
                 }
@@ -149,30 +136,10 @@ namespace CKartta
         }
 
         //-----------------------visual stuff-----------------------------
-        public void colorize(string selection){
-            switch(selection){
-                case "continents":
-                    foreach(Node spot in doneAreas){spot.color = continentColor;}
-                    break;
-                case "water":
-                    ColorsStorage colors = new ColorsStorage();
-                    foreach (Node spot in doneAreas){                        
-                        Brush temp = colors.deepWater;
-                        if (spot.elevation == 4){temp = colors.lowWater;}
-                        else if(spot.elevation == 5){temp = colors.lowLand;}
-                        else if(spot.elevation == 6){temp = colors.midLand;}
-                        else if(spot.elevation >= 7){temp = colors.highLand;}
-                        spot.color = temp;                        
-                    }
-                    break;
-                case "edges":                                        
-                    foreach(Node con in edges){
-                        con.color = Brushes.Red;
-                    }
-                    break;
-                case "height":
-                    break;
-            }
+        public void colorize(){                                   
+            foreach(Node node in edges){
+                node.visual.Stroke = Brushes.Red;
+            }          
         } 
 
         //------------------private functions---------------------- 

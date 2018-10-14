@@ -20,8 +20,6 @@
         <Button x:Name="elevation" Content="Show Water" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="elevation_Click" Height="40" Panel.ZIndex="20" Grid.Column="0"/>
         <Button x:Name="continentsButton" Content="Show continents" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="continent_Click" Height="40" Panel.ZIndex="20" Grid.Column="1"/>
         <Button x:Name="conflictsButton" Content="Show conflict" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="conflict_Click" Height="40" Panel.ZIndex="20" Grid.Column="2"/>
-        <Button x:Name="smoothButton" Content="Smooth" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Click="smooth_Click" Height="40" Panel.ZIndex="20" Grid.Column="3"/>
-
       <StackPanel x:Name="panel"  Background="LightBlue"  Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Height="58" Margin="10,106,10,10" Width="770" Grid.Column="0" Grid.Row="1">
             <TextBlock x:Name="firstTextBlock" FontSize="30" Text="{Binding Path=text1}"/>
             <TextBlock x:Name="secondTextBlock" FontSize="30" Text="{Binding Path=text2}"/>

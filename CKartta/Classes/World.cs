@@ -56,29 +56,19 @@ namespace CKartta
                 temp.boundaryEffect();
             }
         }
-        //random
-        public void erode(){
-            Random coin = new Random();
-            int flip;
+        //finish elevation
+        public void setElevations(){
+            Smooth();
+            ColorsStorage color = new ColorsStorage();
             foreach(Node node in worldGrid){
-                flip = coin.Next(0,32);
-                if (flip == 1){
-                    node.elevation += 2;
-                }
-            }
-        }
-
-        //smooth world
-        public void Smooth(){
-            //erode();
-            Queue<Node> highPoints = new Queue<Node>();
-            for(int i = 15 ;i > 1;i--){
-                foreach(Node node in worldGrid){
-                    if(node.elevation == i){highPoints.Enqueue(node);}
-                } 
-                while(highPoints.Count != 0){
-                    Node temp = highPoints.Dequeue();
-                    temp.Smooth();
+                if (node.elevation >= 5){
+                    int i = node.elevation-5;
+                    Brush tempColor = color.land[i];
+                    node.heightColor = tempColor;
+                }else{
+                    int i = Math.Abs(node.elevation-4);
+                    Brush tempColor = color.water[i];
+                    node.heightColor = tempColor;
                 }
             }
         }
@@ -86,34 +76,18 @@ namespace CKartta
         //-----------------------visual stuff------------------------------------------------
         public void show(string selection){
             //int i is the amount land is either above or below waterlevel
-            if (selection == "height"){
-                ColorsStorage color = new ColorsStorage();
-                foreach(Node node in worldGrid){
-                    if (node.elevation >= 5){
-                        int i = node.elevation-5;
-                        Brush tempColor = color.land[i];
-                        node.color = tempColor;
-                    }else{
-                        int i = Math.Abs(node.elevation-4);
-                        Brush tempColor = color.water[i];
-                        node.color = tempColor;
-                    }
-                }
-            }else{
-                foreach(Continent continent in continents){
-                    continent.colorize(selection);
-                }
+            switch(selection){
+                case "continents":
+                    foreach(Node node in worldGrid){node.setColor("continent");}
+                    break;
+                case "elevation":
+                    foreach(Node node in worldGrid){node.setColor("elevation");}
+                    break;
+                case "edges":
+                    foreach(Continent continent in continents){continent.colorize();}
+                    break;
             }
-        }
-        
-        //draw the nodes
-        public void DrawWorld(Canvas mainCanvas)
-        {
-            foreach (Node node in worldGrid)
-            {
-                node.draw(mainCanvas);
-            }
-        }
+        }       
 
         //------------------private funktions---------------------------------------------
         public void makeGrid(Random Rnd, Canvas mainCanvas){
@@ -128,6 +102,21 @@ namespace CKartta
                     tempList.Add(temp);
                 }
                 nodeGrid.Add(tempList);
+            }
+        }
+
+        //smooth world
+        private void Smooth(){
+            //erode();
+            Queue<Node> highPoints = new Queue<Node>();
+            for(int i = 15 ;i > 1;i--){
+                foreach(Node node in worldGrid){
+                    if(node.elevation == i){highPoints.Enqueue(node);}
+                } 
+                while(highPoints.Count != 0){
+                    Node temp = highPoints.Dequeue();
+                    temp.Smooth();
+                }
             }
         }
     }

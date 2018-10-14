@@ -20,13 +20,15 @@ namespace CKartta
         public List<Node> neighbours = new List<Node>();    //list of neighbours
         public int elevation = 0;                               //how much elevation does the spot have
         public Brush color;
+        public Brush heightColor;
+        public Brush continentColor;
         public int dir;
         public Rectangle visual = new Rectangle{
-            Stroke = Brushes.White,
+            Stroke = Brushes.Red,
             StrokeThickness = 8
         };
 
-        //constructor
+        //-----------constructor-------------------------------------------------
         public Node(int Xcoordinate, int Ycoordinate, int depth, Canvas mainCanvas)
         {
             x = Xcoordinate;
@@ -35,21 +37,14 @@ namespace CKartta
             makeRectangle(mainCanvas);
         }
 
-        //constructor for making a temp node 
+        //constructor for making a temporary node 
         public Node(int Xcoordinate, int Ycoordinate)
         {
             x = Xcoordinate;
             y = Ycoordinate;
         }
 
-        //make rectangle
-        private void makeRectangle(Canvas mainCanvas){
-            //create link
-            Canvas.SetLeft(visual, x * 8);
-            Canvas.SetTop(visual, y * 8);
-            mainCanvas.Children.Add(visual);
-        }
-
+        //----------funktions--------------------------------------------------
         //set neighbours
         public void SetNeighbours(List<Node> FreeNodes,int width,int height)
         {
@@ -83,15 +78,22 @@ namespace CKartta
             }
         }
 
-        //set color for canvas
-        public void draw(Canvas mainCanvas){
-            visual.Stroke = color;
+        //set color of of the window
+        public void setColor(string selection){
+            switch(selection){
+                case "continent":
+                    visual.Stroke = continentColor;
+                    break;
+                case "elevation":
+                    visual.Stroke = heightColor;
+                    break;
+            }
         }
 
         //checks if node is on border of continents
         public bool isConflict(){
             foreach(Node neighbour in neighbours){
-                if (neighbour.color != color){
+                if (neighbour.continentColor != continentColor){
                     return true;
                 } 
             }
@@ -101,11 +103,19 @@ namespace CKartta
         //find out what direction the nearby continent is going
         public int conflictContinent(){
             foreach(Node neighbour in neighbours){
-                if (neighbour.color != color){
+                if (neighbour.continentColor != continentColor){
                     return neighbour.dir;
                 }
             }
             return 0;
+        }
+        //-------------------------------private funktions--------------------
+        //make rectangle
+        private void makeRectangle(Canvas mainCanvas){
+            //create link
+            Canvas.SetLeft(visual, x * 8);
+            Canvas.SetTop(visual, y * 8);
+            mainCanvas.Children.Add(visual);
         }
     }
 }

@@ -71,14 +71,14 @@ namespace CKartta
             //clean some lists
             foreach(Continent continent in continents){continent.finishList();}
 
-            //smooth
-            //mWorld.Smooth(1);
-
             //find edges of continents
             mWorld.continentConflicts();
+            
+            //handle elevation
+            mWorld.setElevations();
 
             //draw all continents
-            mWorld.DrawWorld(mainCanvas);
+            mWorld.show("elevation");
 
             //add ui elements
             mainCanvas.Children.Add(uigrid);
@@ -86,34 +86,19 @@ namespace CKartta
 
         private void elevation_Click(object sender, RoutedEventArgs e)
         {
-            //set waterlevels
-            mWorld.show("height");
-            //draw all continents
-            mWorld.DrawWorld(mainCanvas);
+            //show elevation
+            mWorld.show("elevation");
         }
         private void continent_Click(object sender, RoutedEventArgs e)
         {
-            //set waterlevels
+            //show continents
             mWorld.show("continents");
-            //draw all continents
-            mWorld.DrawWorld(mainCanvas);
         }
-
+        
         private void conflict_Click(object sender, RoutedEventArgs e)
         {
-            //show conflicts
+            //show border areas of continents
             mWorld.show("edges");
-            //draw all continents
-            mWorld.DrawWorld(mainCanvas);
-        }
-        private void smooth_Click(object sender, RoutedEventArgs e)
-        {
-            //show conflicts
-            mWorld.Smooth();
-            mWorld.show("height");
-
-            //draw all continents
-            mWorld.DrawWorld(mainCanvas);
-        }
+        }       
     }
 }
