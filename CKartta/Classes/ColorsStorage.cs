@@ -13,6 +13,8 @@ namespace CKartta
         public List<Brush> colors = new List<Brush>(); //colors for continents
         public List<Brush> land = new List<Brush>(); //colors for land elevation
         public List<Brush> water = new List<Brush>(); //colors for sea elevation
+        public List<Brush> temperature = new List<Brush>(); //colors for temperatures
+        public SolidColorBrush clear = new SolidColorBrush(Color.FromArgb(0x00, 0x1f, 0xf2, 0x90));
 
         public ColorsStorage()
         {        
@@ -21,8 +23,7 @@ namespace CKartta
             colors.Add(Brushes.Red);
             colors.Add(Brushes.Green);
             colors.Add(Brushes.Yellow);
-            colors.Add(Brushes.Orange);
-            
+            colors.Add(Brushes.Orange);            
             colors.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x1f, 0xf2, 0x90)));
             colors.Add(Brushes.Purple);
             colors.Add(Brushes.Black);
@@ -50,6 +51,15 @@ namespace CKartta
             water.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x6b, 0xae, 0xd6)));//#6baed6
             water.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x31, 0x82, 0xbd)));//#3182bd
             water.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x08, 0x51, 0x9c)));//#08519c
+
+            //temperatures 7
+            temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x45, 0x75, 0xb4)));//#4575b4
+            temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x91, 0xbf, 0xdb)));//#91bfdb
+            temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xe0, 0xf3, 0xf8)));//#e0f3f8
+            temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xbf)));//#ffffbf
+            temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xfe, 0xe0, 0x90)));//#fee090
+            temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xfc, 0x8d, 0x59)));//#fc8d59
+            temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xd7, 0x30, 0x27)));//#d73027 0xd7, 0x30, 0x27
         }
     }
 }

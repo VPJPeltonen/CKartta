@@ -18,10 +18,12 @@ namespace CKartta
         public int x;                                       //x coordinate
         public int y;                                       //y coordinate 
         public List<Node> neighbours = new List<Node>();    //list of neighbours
-        public int elevation = 0;                               //how much elevation does the spot have
+        public int elevation = 0;                           //how much elevation does the spot have
+        public sbyte temperature = 0;
         public Brush color;
         public Brush heightColor;
         public Brush continentColor;
+        public Brush temperatureColor;
         public int dir;
         public Rectangle visual = new Rectangle{
             Stroke = Brushes.Red,
@@ -29,11 +31,10 @@ namespace CKartta
         };
 
         //-----------constructor-------------------------------------------------
-        public Node(int Xcoordinate, int Ycoordinate, int depth, Canvas mainCanvas)
+        public Node(int Xcoordinate, int Ycoordinate, Canvas mainCanvas)
         {
             x = Xcoordinate;
             y = Ycoordinate;
-            elevation = depth;
             makeRectangle(mainCanvas);
         }
 
@@ -45,37 +46,31 @@ namespace CKartta
         }
 
         //----------funktions--------------------------------------------------
-        //set neighbours
-        public void SetNeighbours(List<Node> FreeNodes,int width,int height)
-        {
-            int nAmount = 8;
-            if (x == 0){nAmount -= 1;}//check left
-            if (x == width){nAmount -= 1;}//check right
-            if (y == 0){nAmount -= 1;}//check top
-            if (y == height){nAmount -= 1;}//check bottom
-            foreach(Node node in FreeNodes)
-            {                
-                if (node.x == x+1 && node.y == y){neighbours.Add(node);}//right              
-                if (node.x == x-1 && node.y == y){neighbours.Add(node);}//left               
-                if (node.x == x && node.y == y-1){neighbours.Add(node);}//up                
-                if (node.x == x && node.y == y+1){neighbours.Add(node);}//down
-                //corners                
-                if (node.x == x-1 && node.y == y-1){neighbours.Add(node);}//topleft                
-                if (node.x == x+1 && node.y == y-1){neighbours.Add(node);}//topright                
-                if (node.x == x-1 && node.y == y+1){neighbours.Add(node);}//bottomleft                
-                if (node.x == x+1 && node.y == y+1){neighbours.Add(node);}//bottomright
-                //stop if all neightbours found
-                if (neighbours.Count == nAmount){break;}
-            }
-        }
 
-        //adjust height so there isnt too great differences between neighbours
-        public void Smooth(){
-            foreach(Node neighbour in neighbours){
-                if (neighbour.elevation < elevation){
-                    neighbour.elevation = elevation-1;
+        //find out what direction the nearby continent is going
+        public int conflictContinent()
+        {
+            foreach (Node neighbour in neighbours)
+            {
+                if (neighbour.continentColor != continentColor)
+                {
+                    return neighbour.dir;
                 }
             }
+            return 0;
+        }
+
+        //checks if node is on border of continents
+        public bool isConflict()
+        {
+            foreach (Node neighbour in neighbours)
+            {
+                if (neighbour.continentColor != continentColor)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         //set color of of the window
@@ -87,28 +82,58 @@ namespace CKartta
                 case "elevation":
                     visual.Stroke = heightColor;
                     break;
+                case "temperature":
+                    visual.Stroke = temperatureColor;
+                    break;
             }
         }
 
-        //checks if node is on border of continents
-        public bool isConflict(){
-            foreach(Node neighbour in neighbours){
-                if (neighbour.continentColor != continentColor){
-                    return true;
-                } 
-            }
-            return false;
+        //set neighbours
+        public void SetNeighbours(List<List<Node>> FreeNodes, int width, int height)
+        {
+            //unless is left row
+            if (x != 0) { neighbours.Add(FreeNodes[x-1][y]); }
+            //unless top row
+            if (y != 0) { neighbours.Add(FreeNodes[x][y-1]); }
+            //unless right row
+            if (x != width) { neighbours.Add(FreeNodes[x+1][y]); }
+            //unless bottom row
+            if (y != height) { neighbours.Add(FreeNodes[x][y+1]); }
+            //topleft
+            if (!(x == 0 || y == 0)) { neighbours.Add(FreeNodes[x-1][y-1]); }
+            //topright   
+            if (!(x == width || y == 0)) { neighbours.Add(FreeNodes[x + 1][y - 1]); }
+            //bottomleft     
+            if (!(x == 0 || y == height)) { neighbours.Add(FreeNodes[x - 1][y + 1]); }
+            //bottomright
+            if (!(x == width || y == height)) { neighbours.Add(FreeNodes[x + 1][y + 1]); }
         }
-        
-        //find out what direction the nearby continent is going
-        public int conflictContinent(){
-            foreach(Node neighbour in neighbours){
-                if (neighbour.continentColor != continentColor){
-                    return neighbour.dir;
+
+        //temperature setting
+        public void setTemperature(sbyte temp, ColorsStorage color)
+        {
+            temperature = temp;
+            temperatureColor = color.temperature[temp];
+            if (elevation >= 7)
+            {
+                temperature -= (sbyte)(elevation - 6);
+                if (temperature < 0) { temperature = 0; }
+            }
+            temperatureColor = color.temperature[temperature];
+        }
+
+        //adjust height so there isnt too great differences between neighbours
+        public void Smooth()
+        {
+            foreach (Node neighbour in neighbours)
+            {
+                if (neighbour.elevation < elevation)
+                {
+                    neighbour.elevation = elevation - 1;
                 }
             }
-            return 0;
         }
+
         //-------------------------------private funktions--------------------
         //make rectangle
         private void makeRectangle(Canvas mainCanvas){

@@ -1,0 +1,8 @@
+﻿Times:
+0
+65 ms		worldinit
+887 ms		neighbourset
+19 ms		continent creation
+2764 ms		continent spread
+11 ms		formworld
+			show

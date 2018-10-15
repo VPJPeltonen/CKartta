@@ -28,7 +28,9 @@ namespace CKartta
         World mWorld = new World();
         public string state = "none";
         List<Continent> continents = new List<Continent>(); //continentlist
+
         Canvas mainCanvas = new Canvas();
+        ColorsStorage color = new ColorsStorage();
 
         public MainWindow()
         {
@@ -51,13 +53,14 @@ namespace CKartta
             //get list of grid places
             List<Node> freeNodes = mWorld.GetList();
 
-            //get neighbours for nodes
+            /*/get neighbours for nodes
             foreach(Node node in freeNodes) { node.SetNeighbours(freeNodes,GWidth,GHeight); }
+            */
 
             //create continents    
-            continents = mWorld.createContinents(12, freeNodes, GWidth, GHeight, Rnd);
+            continents = mWorld.createContinents(12, freeNodes, GWidth, GHeight, Rnd, color);
 
-            mainCanvas.Background = Brushes.White;
+            mainCanvas.Background = Brushes.Black;
             
             main.Content = mainCanvas; //attach  the grid to the window
             
@@ -71,14 +74,11 @@ namespace CKartta
             //clean some lists
             foreach(Continent continent in continents){continent.finishList();}
 
-            //find edges of continents
-            mWorld.continentConflicts();
-            
-            //handle elevation
-            mWorld.setElevations();
+            //generate nature of the world
+            mWorld.formWorld(color);
 
             //draw all continents
-            mWorld.show("elevation");
+            mWorld.show("temperature");
 
             //add ui elements
             mainCanvas.Children.Add(uigrid);
@@ -86,7 +86,6 @@ namespace CKartta
 
         private void elevation_Click(object sender, RoutedEventArgs e)
         {
-            //show elevation
             mWorld.show("elevation");
         }
         private void continent_Click(object sender, RoutedEventArgs e)
@@ -99,6 +98,11 @@ namespace CKartta
         {
             //show border areas of continents
             mWorld.show("edges");
-        }       
+        }      
+        
+        private void temperature_Click(object sender, RoutedEventArgs e)
+        {
+            mWorld.show("temperature");
+        } 
     }
 }
