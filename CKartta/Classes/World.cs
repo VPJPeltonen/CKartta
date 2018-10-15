@@ -55,6 +55,7 @@ namespace CKartta
             continentConflicts();
             setElevations(color);
             setTemperature(color);
+            SetRainfall(color);
         }
 
 
@@ -70,6 +71,9 @@ namespace CKartta
                     break;
                 case "elevation":
                     foreach(Node node in worldGrid){node.setColor("elevation");}
+                    break;
+                case "rainfall":
+                    foreach(Node node in worldGrid) { node.setColor("rainfall"); }
                     break;
                 case "temperature":
                     foreach(Node node in worldGrid){node.setColor("temperature");}
@@ -120,6 +124,44 @@ namespace CKartta
                     node.heightColor = tempColor;
                     sea.Add(node);
                 }
+            }
+        }
+
+        private void SetRainfall(ColorsStorage color)
+        {
+            //coast tiles
+            foreach(Node node in sea) {
+                foreach(Node neighbour in node.neighbours)
+                {
+                    if (neighbour.elevation >= 5) { neighbour.rainfall += 1; }
+                }
+            }
+            //tropics
+            int slice = hgt / 13;
+            for (int i = 0; i <wdt;i++) {
+                for (int j = slice * 6; j < slice * 7; j++) { nodeGrid[i][j].rainfall += 4; }
+            }
+            //mountainsides
+            foreach (Node node in land) { node.Mountainsides(); }
+            //even it out
+            Queue<Node> highPoints = new Queue<Node>();
+            for (int i = 8; i > 0; i--)
+            {
+                foreach (Node node in worldGrid)
+                {
+                    if (node.rainfall == i) { highPoints.Enqueue(node); }
+                }
+                while (highPoints.Count != 0)
+                {
+                    Node temp = highPoints.Dequeue();
+                    temp.SmoothRainfall();
+                }
+            }
+            //color it all
+            foreach (Node node in sea) { node.temperatureColor = color.clear; }
+            foreach (Node node in land) {
+                if (node.rainfall >= 8) { node.rainfall = 7; }
+                node.rainfallColor = color.rainfall[node.rainfall];
             }
         }
 

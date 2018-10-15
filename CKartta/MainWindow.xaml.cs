@@ -103,6 +103,11 @@ namespace CKartta
         private void temperature_Click(object sender, RoutedEventArgs e)
         {
             mWorld.show("temperature");
-        } 
+        }
+
+        private void Rainfall_Click(object sender, RoutedEventArgs e)
+        {
+            mWorld.show("rainfall");
+        }
     }
 }

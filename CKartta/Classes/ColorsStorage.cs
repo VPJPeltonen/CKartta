@@ -14,6 +14,7 @@ namespace CKartta
         public List<Brush> land = new List<Brush>(); //colors for land elevation
         public List<Brush> water = new List<Brush>(); //colors for sea elevation
         public List<Brush> temperature = new List<Brush>(); //colors for temperatures
+        public List<Brush> rainfall = new List<Brush>(); //colors for rainfall
         public SolidColorBrush clear = new SolidColorBrush(Color.FromArgb(0x00, 0x1f, 0xf2, 0x90));
 
         public ColorsStorage()
@@ -60,6 +61,16 @@ namespace CKartta
             temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xfe, 0xe0, 0x90)));//#fee090
             temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xfc, 0x8d, 0x59)));//#fc8d59
             temperature.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xd7, 0x30, 0x27)));//#d73027 0xd7, 0x30, 0x27
+
+            //rainfall 8
+            rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x8c, 0x51, 0x0a)));//#8c510a
+            rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xbf, 0x81, 0x2d)));//# bf812d
+            rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xdf, 0xc2, 0x7d)));//# dfc27d
+            rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xf6, 0xe8, 0xc3)));//# f6e8c3
+            rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0xc7, 0xea, 0xa5)));//# c7eae5
+            rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x80, 0xcd, 0xc1)));//#80cdc1
+            rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x35, 0x97, 0x8f)));//#35978f
+            rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x01, 0x66, 0x5e)));//#01665e
         }
     }
 }

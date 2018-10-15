@@ -20,10 +20,12 @@ namespace CKartta
         public List<Node> neighbours = new List<Node>();    //list of neighbours
         public int elevation = 0;                           //how much elevation does the spot have
         public sbyte temperature = 0;
+        public sbyte rainfall = 0;
         public Brush color;
         public Brush heightColor;
         public Brush continentColor;
         public Brush temperatureColor;
+        public Brush rainfallColor;
         public int dir;
         public Rectangle visual = new Rectangle{
             Stroke = Brushes.Red,
@@ -81,6 +83,9 @@ namespace CKartta
                 case "elevation":
                     visual.Stroke = heightColor;
                     break;
+                case "rainfall":
+                    visual.Stroke = rainfallColor;
+                    break;
                 case "temperature":
                     visual.Stroke = temperatureColor;
                     break;
@@ -117,13 +122,37 @@ namespace CKartta
                 if (temperature < 0) { temperature = 0; }
             }
         }
-         
+
+        //mountainside rains
+        public void Mountainsides()
+        {
+            if (elevation >= 7)
+            {
+                foreach (Node neighbour in neighbours)
+                {
+                    if (elevation != neighbour.elevation)
+                    {
+                        neighbour.rainfall += 1;
+                    }
+                }
+            }
+        }
+
         //adjust height so there isnt too great differences between neighbours
         public void SmoothElevation()
         {
             foreach (Node neighbour in neighbours)
             {
                 if (neighbour.elevation < elevation){neighbour.elevation = elevation - 1;}
+            }
+        }
+
+        //adjust temperature
+        public void SmoothRainfall()
+        {
+            foreach (Node neighbour in neighbours)
+            {
+                if (neighbour.rainfall < rainfall) { neighbour.rainfall = (sbyte)(rainfall - 1); }
             }
         }
 
