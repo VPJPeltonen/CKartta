@@ -128,27 +128,42 @@ namespace CKartta
             int slice = hgt/13;
             for(int i = 0; i < wdt; i++){
                 int j = 0;
-                for (; j < slice;j++){nodeGrid[i][j].setTemperature(0,color);}              
-                for (; j < slice*2;j++){nodeGrid[i][j].setTemperature(1,color);}
-                for (; j < slice*3;j++){nodeGrid[i][j].setTemperature(2,color);}
-                for (; j < slice*4;j++){nodeGrid[i][j].setTemperature(3,color);}
-                for (; j < slice*5;j++){nodeGrid[i][j].setTemperature(4,color);}
-                for (; j < slice*6;j++){nodeGrid[i][j].setTemperature(5,color);}
-                for (; j < slice*7;j++){nodeGrid[i][j].setTemperature(6,color);}
-                for (; j < slice*8;j++){nodeGrid[i][j].setTemperature(5,color);}
-                for (; j < slice*9;j++){nodeGrid[i][j].setTemperature(4,color);}
-                for (; j < slice*10;j++){nodeGrid[i][j].setTemperature(3,color);}
-                for (; j < slice*11;j++){nodeGrid[i][j].setTemperature(2,color);}
-                for (; j < slice*12;j++){nodeGrid[i][j].setTemperature(1,color);}
-                for (; j < hgt;j++){nodeGrid[i][j].setTemperature(0,color);}
+                for (; j < slice;j++){nodeGrid[i][j].temperature = 0;}              
+                for (; j < slice*2;j++){nodeGrid[i][j].temperature = 1; }
+                for (; j < slice*3;j++){nodeGrid[i][j].temperature = 2; }
+                for (; j < slice*4;j++){nodeGrid[i][j].temperature = 3; }
+                for (; j < slice*5;j++){nodeGrid[i][j].temperature = 4; }
+                for (; j < slice*6;j++){nodeGrid[i][j].temperature = 5; }
+                for (; j < slice*7;j++){nodeGrid[i][j].temperature = 6; }
+                for (; j < slice*8;j++){nodeGrid[i][j].temperature = 5; }
+                for (; j < slice*9;j++){nodeGrid[i][j].temperature = 4; }
+                for (; j < slice*10;j++){nodeGrid[i][j].temperature = 3; }
+                for (; j < slice*11;j++){nodeGrid[i][j].temperature = 2; }
+                for (; j < slice*12;j++){nodeGrid[i][j].temperature = 1; }
+                for (; j < hgt;j++){nodeGrid[i][j].temperature = 0; }
             }
-            foreach(Node node in sea) { node.temperatureColor = color.clear; }
+            foreach (Node node in land) { node.HeightAdjust(); }
+            //smooth temperature differences
+            Queue<Node> highPoints = new Queue<Node>();
+            for (int i = 8; i > 0; i--)
+            {
+                foreach (Node node in worldGrid)
+                {
+                    if (node.temperature == i) { highPoints.Enqueue(node); }
+                }
+                while (highPoints.Count != 0)
+                {
+                    Node temp = highPoints.Dequeue();
+                    temp.SmoothTemperature();
+                }
+            }
+            foreach (Node node in land) { node.temperatureColor = color.temperature[node.temperature]; }
+            foreach (Node node in sea) { node.temperatureColor = color.clear; }
         }
 
         //smooth world
         private void Smooth()
         {
-            //erode();
             Queue<Node> highPoints = new Queue<Node>();
             for (int i = 15; i > 1; i--)
             {
@@ -159,7 +174,7 @@ namespace CKartta
                 while (highPoints.Count != 0)
                 {
                     Node temp = highPoints.Dequeue();
-                    temp.Smooth();
+                    temp.SmoothElevation();
                 }
             }
         }

@@ -46,7 +46,6 @@ namespace CKartta
         }
 
         //----------funktions--------------------------------------------------
-
         //find out what direction the nearby continent is going
         public int conflictContinent()
         {
@@ -110,27 +109,30 @@ namespace CKartta
         }
 
         //temperature setting
-        public void setTemperature(sbyte temp, ColorsStorage color)
+        public void HeightAdjust()
         {
-            temperature = temp;
-            temperatureColor = color.temperature[temp];
             if (elevation >= 7)
             {
                 temperature -= (sbyte)(elevation - 6);
                 if (temperature < 0) { temperature = 0; }
             }
-            temperatureColor = color.temperature[temperature];
         }
-
+         
         //adjust height so there isnt too great differences between neighbours
-        public void Smooth()
+        public void SmoothElevation()
         {
             foreach (Node neighbour in neighbours)
             {
-                if (neighbour.elevation < elevation)
-                {
-                    neighbour.elevation = elevation - 1;
-                }
+                if (neighbour.elevation < elevation){neighbour.elevation = elevation - 1;}
+            }
+        }
+
+        //adjust temperature
+        public void SmoothTemperature()
+        {
+            foreach (Node neighbour in neighbours)
+            {
+                if (neighbour.temperature < temperature) { neighbour.temperature = (sbyte)(temperature - 1); }
             }
         }
 
