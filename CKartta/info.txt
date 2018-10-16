@@ -6,3 +6,31 @@
 2764 ms		continent spread
 11 ms		formworld
 			show
+	
+						temp	rainfall
+Polar Desert			0-1		0-2
+Ice Cap					0		3-7
+Tundra					1		3-4
+Wet Tundra				1		5-6
+Polar Wetlands			1-2		7
+Cool Desert				2-3		0-1
+Steppe					2-3		2
+Boreal Forest			2		3-6
+Temperate Woodland		3		3-4
+Temperate Forest		3-4		5
+Temperate Wet Forest	3-4		6
+Temperate Wetlands		3-4		7
+Extreme Desert			4-6		0
+Desert					4-6		1
+Subtropical Scrup		4-5		2
+Subropical Woodlands	4-5		3
+Mediterranean			4		4
+Subtropical Dry Forest	5		4
+Subtropical Forest		5		5
+Subtropical Wet Forest	5		6
+Subtropical Wetlands	5		7
+Tropical Scrup			6		2
+Tropical Woodlands		6		3
+Tropical Dry Forest		6		4
+Tropical Wet Forest		6		5-6
+Tropical Wetlands		6		7

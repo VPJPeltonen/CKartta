@@ -109,5 +109,10 @@ namespace CKartta
         {
             mWorld.show("rainfall");
         }
+        
+        private void Enviroment_Click(object sender, RoutedEventArgs e)
+        {
+            mWorld.show("enviroment");
+        }
     }
 }

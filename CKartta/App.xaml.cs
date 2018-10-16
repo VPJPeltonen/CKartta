@@ -13,5 +13,7 @@ namespace CKartta
     /// </summary>
     public partial class App : Application
     {
+
     }
 }
+

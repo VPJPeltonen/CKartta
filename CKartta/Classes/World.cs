@@ -56,6 +56,7 @@ namespace CKartta
             setElevations(color);
             setTemperature(color);
             SetRainfall(color);
+            SetClimate(color);
         }
 
 
@@ -71,6 +72,9 @@ namespace CKartta
                     break;
                 case "elevation":
                     foreach(Node node in worldGrid){node.setColor("elevation");}
+                    break;
+                case "enviroment":
+                    foreach (Node node in worldGrid) { node.setColor("enviroment"); }
                     break;
                 case "rainfall":
                     foreach(Node node in worldGrid) { node.setColor("rainfall"); }
@@ -107,6 +111,16 @@ namespace CKartta
                 nodeGrid.Add(tempList);
             }
             foreach(Node node in worldGrid) { node.SetNeighbours(nodeGrid,wdt,hgt); }
+        }
+
+        //set climate
+        private void SetClimate(ColorsStorage color)
+        {
+            foreach(Node node in land) { node.SetClimate(color); }
+            foreach(Node node in sea) {
+                if (node.temperature == 0 && node.rainfall >= 3) { node.enviromentColor = color.ClimateColor("Ice Cap"); }
+                else { node.enviromentColor = color.clear; }
+            }
         }
 
         //finish elevation

@@ -72,5 +72,39 @@ namespace CKartta
             rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x35, 0x97, 0x8f)));//#35978f
             rainfall.Add(new SolidColorBrush(Color.FromArgb(0xff, 0x01, 0x66, 0x5e)));//#01665e
         }
+
+        public Brush ClimateColor(string climate)
+        {
+            switch (climate)
+            {
+                case "Polar Desert":            return new SolidColorBrush(Color.FromArgb(0xff, 0x5a, 0x5a, 0x5a));  //5a5a5a
+                case "Ice Cap":                 return new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0xff));  //ffffff
+                case "Tundra":                  return new SolidColorBrush(Color.FromArgb(0xff, 0xbf, 0xbf, 0xbf));  //bfbfbf
+                case "Wet Tundra":              return new SolidColorBrush(Color.FromArgb(0xff, 0xcc, 0xc0, 0xda));  //ccc0da
+                case "Polar Wetlands":          return new SolidColorBrush(Color.FromArgb(0xff, 0x60, 0x49, 0x7b));  //60497b
+                case "Cool Desert":             return new SolidColorBrush(Color.FromArgb(0xff, 0x95, 0x57, 0x35));  //953735
+                case "Steppe":                  return new SolidColorBrush(Color.FromArgb(0xff, 0x94, 0x8b, 0x54));  //948b54
+                case "Boreal Forest":           return new SolidColorBrush(Color.FromArgb(0xff, 0x9d, 0xb1, 0x95));  //9db195
+                case "Temperate Woodlands":      return new SolidColorBrush(Color.FromArgb(0xff, 0xf2, 0xdd, 0xdc));  //f2dddc
+                case "Temperate Forest":        return new SolidColorBrush(Color.FromArgb(0xff, 0xdb, 0xee, 0xf3));  //dbeef3
+                case "Temperate Wet Forest":    return new SolidColorBrush(Color.FromArgb(0xff, 0x93, 0xcd, 0xdd));  //93cddd
+                case "Temperate Wetlands":      return new SolidColorBrush(Color.FromArgb(0xff, 0x31, 0x84, 0x9b));  //31849b
+                case "Extreme Desert":          return new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0x50, 0x50));  //ff5050
+                case "Desert":                  return new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0x99, 0x00));  //ff9900
+                case "Subtropical Scrub":       return new SolidColorBrush(Color.FromArgb(0xff, 0xcc, 0xcc, 0x00));  //cccc00
+                case "Subtropical Woodlands":    return new SolidColorBrush(Color.FromArgb(0xff, 0xfc, 0xd5, 0xb4));  //fcd5b4
+                case "Mediterranean":           return new SolidColorBrush(Color.FromArgb(0xff, 0xd9, 0x97, 0x95));  //d99795
+                case "Subtropical Dry Forest":  return new SolidColorBrush(Color.FromArgb(0xff, 0xd7, 0xe4, 0xbc));  //d7e4bc
+                case "Subtropical Forest":      return new SolidColorBrush(Color.FromArgb(0xff, 0x66, 0xff, 0x66));  //66ff66
+                case "Subtropical Wet Forest":  return new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0xb0, 0x50));  //00b050   
+                case "Subtropical Wetlands":    return new SolidColorBrush(Color.FromArgb(0xff, 0x00, 0x82, 0x3b));  //00823b
+                case "Tropical Scrub":          return new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xff, 0x00));  //ffff00
+                case "Tropical Woodlands":      return new SolidColorBrush(Color.FromArgb(0xff, 0xff, 0xfb, 0xc1));  //fffbc1
+                case "Tropical Dry Forest":     return new SolidColorBrush(Color.FromArgb(0xff, 0xcc, 0xff, 0x33));  //ccff33
+                case "Tropical Wet Forest":     return new SolidColorBrush(Color.FromArgb(0xff, 0x75, 0x92, 0x3c));  //75923c
+                case "Tropical Wetlands":       return new SolidColorBrush(Color.FromArgb(0xff, 0x4f, 0x62, 0x28));  //4f6228
+                default:                        return new SolidColorBrush(Color.FromArgb(0x00, 0x00, 0x00, 0x00));  //
+            }
+        }
     }
 }

@@ -21,11 +21,13 @@ namespace CKartta
         public int elevation = 0;                           //how much elevation does the spot have
         public sbyte temperature = 0;
         public sbyte rainfall = 0;
+        public string climate = "";
         public Brush color;
         public Brush heightColor;
         public Brush continentColor;
         public Brush temperatureColor;
         public Brush rainfallColor;
+        public Brush enviromentColor;
         public int dir;
         public Rectangle visual = new Rectangle{
             Stroke = Brushes.Red,
@@ -83,6 +85,9 @@ namespace CKartta
                 case "elevation":
                     visual.Stroke = heightColor;
                     break;
+                case "enviroment":
+                    visual.Stroke = enviromentColor;
+                    break;
                 case "rainfall":
                     visual.Stroke = rainfallColor;
                     break;
@@ -136,6 +141,109 @@ namespace CKartta
                     }
                 }
             }
+        }
+
+        //set climate base on rainfall and temperature
+        public void SetClimate(ColorsStorage color)
+        {
+            switch (rainfall)
+            {
+                case 0:
+                    switch (temperature) {                     
+                        case 0: climate = "Polar Desert"; break;
+                        case 1: climate = "Polar Desert"; break;
+                        case 2: climate = "Cool Desert"; break;
+                        case 3: climate = "Cool Desert"; break;
+                        case 4: climate = "Extreme Desert"; break;
+                        case 5: climate = "Extreme Desert"; break;
+                        case 6: climate = "Extreme Desert"; break;
+                    } break;
+                case 1: 
+                    switch (temperature)
+                    {
+                        case 0: climate = "Polar Desert"; break;
+                        case 1: climate = "Polar Desert"; break;
+                        case 2: climate = "Cool Desert"; break;
+                        case 3: climate = "Cool Desert"; break;
+                        case 4: climate = "Desert"; break;
+                        case 5: climate = "Desert"; break;
+                        case 6: climate = "Desert"; break;
+                    }
+                    break;
+                case 2: 
+                    switch (temperature)
+                    {
+                        case 0: climate = "Polar Desert"; break;
+                        case 1: climate = "Polar Desert"; break;
+                        case 2: climate = "Steppe"; break;
+                        case 3: climate = "Steppe"; break;
+                        case 4: climate = "Subtropical Scrub"; break;
+                        case 5: climate = "Subtropical Scrub"; break;
+                        case 6: climate = "Tropical Scrub"; break;
+                    }
+                    break;
+                case 3: 
+                    switch (temperature)
+                    {
+                        case 0: climate = "Ice Cap"; break;
+                        case 1: climate = "Tundra"; break;
+                        case 2: climate = "Boreal Forest"; break;
+                        case 3: climate = "Temperate Woodlands"; break;
+                        case 4: climate = "Subtropical Woodlands"; break;
+                        case 5: climate = "Subtropical Woodlands"; break;
+                        case 6: climate = "Tropical Woodlands"; break;
+                    }
+                    break;
+                case 4: 
+                    switch (temperature)
+                    {
+                        case 0: climate = "Ice Cap"; break;
+                        case 1: climate = "Tundra"; break;
+                        case 2: climate = "Boreal Forest"; break;
+                        case 3: climate = "Temperate Woodlands"; break;
+                        case 4: climate = "Mediterranean"; break;
+                        case 5: climate = "Subtropical Dry Forest"; break;
+                        case 6: climate = "Tropical Dry Forest"; break;
+                    }
+                    break;
+                case 5: 
+                    switch (temperature)
+                    {
+                        case 0: climate = "Ice Cap"; break;
+                        case 1: climate = "Wet Tundra"; break;
+                        case 2: climate = "Boreal Forest"; break;
+                        case 3: climate = "Temperate Forest"; break;
+                        case 4: climate = "Temperate Forest"; break;
+                        case 5: climate = "Subtropical Forest"; break;
+                        case 6: climate = "Tropical Wet Forest"; break;
+                    }
+                    break;
+                case 6: 
+                    switch (temperature)
+                    {
+                        case 0: climate = "Ice Cap"; break;
+                        case 1: climate = "Wet Tundra"; break;
+                        case 2: climate = "Boreal Forest"; break;
+                        case 3: climate = "Temperate Wet Forest"; break;
+                        case 4: climate = "Temperate Wet Forest"; break;
+                        case 5: climate = "Subtropical Wet Forest"; break;
+                        case 6: climate = "Tropical Wet Forest"; break;
+                    }
+                    break;
+                case 7: 
+                    switch (temperature)
+                    {
+                        case 0: climate = "Ice Cap"; break;
+                        case 1: climate = "Polar Wetlands"; break;
+                        case 2: climate = "Polar Wetlands"; break;
+                        case 3: climate = "Temperate Wetlands"; break;
+                        case 4: climate = "Temperate Wetlands"; break;
+                        case 5: climate = "Subtropical Wetlands"; break;
+                        case 6: climate = "Tropical Wetlands"; break;
+                    }
+                    break;
+            }
+            enviromentColor = color.ClimateColor(climate);
         }
 
         //adjust height so there isnt too great differences between neighbours
